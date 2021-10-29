@@ -129,12 +129,17 @@ const FormularioCreacionProductos = ({
 
     const enviarAlBackend = ()=>{
         console.log('id', id,'descripcion', descripcion,'valorUnitario', valorUnitario,'estado', estado)
-        toast.success('Producto Creado con éxito')
+        if(id===''|| descripcion===''|| valorUnitario===''|| estado===''){
+            toast.error('Ingrese toda la información')
+        }
+        else{
+            toast.success('Producto Creado con éxito')
         funcionParaMostrarLaTabla(true)
         funcionParaAgregarUnProducto([
         ...listaProductos,
         { id: id, descripcion: descripcion, valorUnitario: valorUnitario, estado: estado }
     ])
+        }      
     }
 
     return <div className='flex flex-col items-center justify-center'>
@@ -151,6 +156,7 @@ const FormularioCreacionProductos = ({
                 onChange={(e)=>{
                     setId(e.target.value)
                 }}
+                required
                 />
             </label>
             <label className='flex flex-col' htmlFor='descripcion'>
@@ -163,6 +169,7 @@ const FormularioCreacionProductos = ({
                 value={descripcion}
                 onChange={(e)=>{setDescripcion(e.target.value)
                 }}
+                required
                 />
             </label>
             <label className='flex flex-col' htmlFor='valorUnitario'>
@@ -175,20 +182,26 @@ const FormularioCreacionProductos = ({
                 value={valorUnitario}
                 onChange={(e)=>{setValorUnitario(e.target.value)
                 }}
+                required
                 />
             </label>
             <label className='flex flex-col' htmlFor='estado'>
                 Estado
                 <select 
                 value={estado}
-                onChange={(e)=>{setEstado(e.target.value)
+                onChange={(e)=>{
+                    setEstado(e.target.value)
                 }}
-
-                className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2'>
+                className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2'
+                name='estado'
+                required
+                >
                     <option disabled>Selecciones una opción</option>
                     <option>Disponible</option>
                     <option>No disponible</option>
+                    
                 </select>
+                
             </label>
             <button 
             type='button'
