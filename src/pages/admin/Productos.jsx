@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -31,7 +31,7 @@ const productosBackend = [
 ]
 
 const Productos = () => {
-    const [ mostrarTabla,setMostrarTabla ] = useState(true);
+    const [mostrarTabla,setMostrarTabla ] = useState(true);
     const [productos,setProductos] = useState([])
     const [textoBoton,setTextoBoton] = useState('Crear nuevo Producto');
     const [colorBoton, setColorBoton]= useState('indigo')
@@ -71,9 +71,9 @@ const Productos = () => {
             <TablaProductos listaProductos={productos} /> 
             ): (
             <FormularioCreacionProductos 
-            funcionParaMostrarLaTabla={setMostrarTabla}
+            setMostrarTabla={setMostrarTabla}
             listaProductos={productos} 
-            funcionParaAgregarUnProducto={setProductos}/>
+            setProductos={setProductos}/>
             )}  
             <ToastContainer position='bottom-center' autoClose={5000}/> 
         </div>
@@ -114,37 +114,29 @@ const TablaProductos = ({listaProductos})=>{
         
     )
     
-
-
 }
-const FormularioCreacionProductos = ({
-    funcionParaMostrarLaTabla,
-    listaProductos,
-    funcionParaAgregarUnProducto,
-})=>{
-    const [id, setId]=useState('')
-    const [descripcion, setDescripcion]=useState('')
-    const [valorUnitario, setValorUnitario]=useState('')
-    const [estado, setEstado]=useState('')
+const FormularioCreacionProductos = ({setMostrarTabla,listaProductos,setProductos})=>{
+    const form= useRef(null)
+        
 
-    const enviarAlBackend = ()=>{
-        console.log('id', id,'descripcion', descripcion,'valorUnitario', valorUnitario,'estado', estado)
-        if(id===''|| descripcion===''|| valorUnitario===''|| estado===''){
-            toast.error('Ingrese toda la información')
-        }
-        else{
-            toast.success('Producto Creado con éxito')
-        funcionParaMostrarLaTabla(true)
-        funcionParaAgregarUnProducto([
-        ...listaProductos,
-        { id: id, descripcion: descripcion, valorUnitario: valorUnitario, estado: estado }
-    ])
-        }      
-    }
+    const submitForm=(e)=>{
+        e.preventDefault()
+        const fd = new FormData(form.current)
 
-    return <div className='flex flex-col items-center justify-center'>
+        const nuevoProducto = {}    
+        fd.forEach((value, key) => {
+            nuevoProducto[key]=value
+        })
+        setMostrarTabla(true)
+        setProductos([...listaProductos, nuevoProducto])}
+        //identificar el caso de exito y mostrar un toast de exito
+        toast.success('producto agregado con éxito')
+        //identificar el caso de error y mostrar un toast de error
+        //  toast.error('Error creando un producto')
+    return (
+    <div className='flex flex-col items-center justify-center'>
         <h2 className='text-2xl font font-extrabold text-gray-800'>CREAR NUEVO PRODUCTO</h2>
-        <form className='flex flex-col'>
+        <form ref={form} onSubmit={submitForm} className='flex flex-col'>
             <label  className='flex flex-col' htmlFor='id'>
                 Identificador Unico
                 <input 
@@ -152,10 +144,6 @@ const FormularioCreacionProductos = ({
                 className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2' 
                 type='text' 
                 placeholder='Id'
-                value={id}
-                onChange={(e)=>{
-                    setId(e.target.value)
-                }}
                 required
                 />
             </label>
@@ -166,9 +154,6 @@ const FormularioCreacionProductos = ({
                 className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2' 
                 type='text ' 
                 placeholder='decripción del producto'
-                value={descripcion}
-                onChange={(e)=>{setDescripcion(e.target.value)
-                }}
                 required
                 />
             </label>
@@ -179,24 +164,19 @@ const FormularioCreacionProductos = ({
                 className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2' 
                 type='number' 
                 placeholder='valor unitario'
-                value={valorUnitario}
-                onChange={(e)=>{setValorUnitario(e.target.value)
-                }}
                 required
                 />
             </label>
             <label className='flex flex-col' htmlFor='estado'>
                 Estado
                 <select 
-                value={estado}
-                onChange={(e)=>{
-                    setEstado(e.target.value)
-                }}
                 className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2'
                 name='estado'
                 required
+                defaultValue={0}
                 >
-                    <option disabled>Selecciones una opción</option>
+                    <option disabled value={0}>
+                        Seleccione una opción</option>
                     <option>Disponible</option>
                     <option>No disponible</option>
                     
@@ -204,18 +184,14 @@ const FormularioCreacionProductos = ({
                 
             </label>
             <button 
-            type='button'
-            className='col-span-2 bg-indigo-700 p-2 rounded-full shadow-md text-white'
-            onClick = {()=>{
-                enviarAlBackend()
-            }}
-        >
-                
+            type='submit'
+            className='col-span-2 bg-indigo-700 p-2 rounded-full shadow-md text-white'         
+        >                
             Guardar Producto
             </button>
         </form>
-
     </div>
+    )
 }   
 
 export default Productos
