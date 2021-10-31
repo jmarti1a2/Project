@@ -12,9 +12,9 @@ const Sidebar = () => {
 
                 <div className='my-4'>
                     <Ruta icono='fa fa-user' ruta='/admin/perfil' nombre='Perfil' />
-                    <Ruta icono='fa fa-car' ruta='/admin/productos' nombre='Productos' />
-                    <Ruta icono='fas fa-car' ruta='/admin/ventas' nombre='Ventas' />
-                    <Ruta icono='fas fa-car' ruta='/admin/usuarios' nombre='Usuarios' />
+                    <Ruta icono='fas fa-shopping-basket' ruta='/admin/productos' nombre='Productos' />
+                    <Ruta icono='fas fa-search-dollar' ruta='/admin/ventas' nombre='Ventas' />
+                    <Ruta icono='fas fa-users' ruta='/admin/usuarios' nombre='Usuarios' />
                 </div>
                 <button>Cerrar sesión</button>
             </nav>
