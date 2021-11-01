@@ -1,34 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
+import axios from "axios";
 import 'react-toastify/dist/ReactToastify.css'
 
-
-const productosBackend = [
-    {
-        id:"id1",
-        descripcion:"tornillo",
-        valorUnitario:"500",
-        estado:"no disponible",
-    },
-    {
-        id:"id2",
-        descripcion:"cemento",
-        valorUnitario:"28000",
-        estado:"disponible",
-    },
-    {
-        id:"id3",
-        descripcion:"arena",
-        valorUnitario:"15000",
-        estado:"disponible",
-    },
-    {
-        id:"id4",
-        descripcion:"metro",
-        valorUnitario:"5000",
-        estado:"disponible",
-    }
-]
 
 const Productos = () => {
     const [mostrarTabla,setMostrarTabla ] = useState(true);
@@ -37,10 +11,24 @@ const Productos = () => {
     const [colorBoton, setColorBoton]= useState('indigo')
 
     useEffect(()=>{
-        //obtener lista de productos desde el backend
-        setProductos(productosBackend)
 
-    },[])
+        const obtenerProductos = async()=>{
+            const options = {method: 'GET', url: 'http://localhost:5000/productos/'};
+        await axios
+        .request(options)
+        .then(function (response) {
+            setProductos(response.data)
+        })
+        .catch(function (error) {
+            console.error(error);
+        });
+        }
+        //obtener lista de productos desde el backend
+    if(mostrarTabla){
+        obtenerProductos()
+
+    }
+    },[mostrarTabla])
 
 
     useEffect(()=> {
@@ -119,7 +107,7 @@ const FormularioCreacionProductos = ({setMostrarTabla,listaProductos,setProducto
     const form= useRef(null)
         
 
-    const submitForm=(e)=>{
+    const submitForm= async (e)=>{
         e.preventDefault()
         const fd = new FormData(form.current)
 
@@ -127,12 +115,30 @@ const FormularioCreacionProductos = ({setMostrarTabla,listaProductos,setProducto
         fd.forEach((value, key) => {
             nuevoProducto[key]=value
         })
+
+        const options = {
+            method: 'POST',
+            url: 'http://localhost:5000/productos/nuevo',
+            headers: {'Content-Type': 'application/json'},
+            data: {id: nuevoProducto.id, descripcion: nuevoProducto.descripcion, valorUnitario: nuevoProducto.valorUnitario, estado: nuevoProducto.estado}
+          };
+
+        await axios
+            .request(options)
+            .then(function (response) {
+            console.log(response.data);
+            toast.success('producto agregado con éxito')
+          })
+            .catch(function (error) {
+                console.error(error);
+                toast.error('Error creando un producto')
+          });
+
+
         setMostrarTabla(true)
-        setProductos([...listaProductos, nuevoProducto])}
+    }
         //identificar el caso de exito y mostrar un toast de exito
-        toast.success('producto agregado con éxito')
         //identificar el caso de error y mostrar un toast de error
-        //  toast.error('Error creando un producto')
     return (
     <div className='flex flex-col items-center justify-center'>
         <h2 className='text-2xl font font-extrabold text-gray-800'>CREAR NUEVO PRODUCTO</h2>

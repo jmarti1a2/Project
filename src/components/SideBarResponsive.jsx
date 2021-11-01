@@ -9,7 +9,7 @@ const SideBarResponsive = () => {
         onClick={()=>{setMostrarNavegacion(!mostrarNavegacion)
         }}
         >
-            <i className={`fas fa-${mostrarNavegacion?'times':'bars'} hover:text-blue-600`}/>
+            <i className={`mx-3 fas fa-${mostrarNavegacion?'times':'bars'} hover:text-blue-600`}/>
         {mostrarNavegacion && (
         <ul className='bg-gray-900 '>
             <ResponsiveRoute nombre='perfil' ruta='/admin/perfil'/>
@@ -26,7 +26,7 @@ const SideBarResponsive = () => {
 const ResponsiveRoute = ({ruta,nombre}) =>{
     return(
         <Link to={ruta}>
-        <li className='text-gray-200' > {nombre}</li>
+        <li className='text-gray-200 border border-gray-300 p-2' > {nombre}</li>
         </Link>
 
     )
