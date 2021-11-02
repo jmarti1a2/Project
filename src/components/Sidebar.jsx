@@ -19,7 +19,9 @@ const Sidebar = () => {
                     <Ruta icono='fas fa-search-dollar' ruta='/admin/ventas' nombre='Ventas' />
                     <Ruta icono='fas fa-users' ruta='/admin/usuarios' nombre='Usuarios' />
                 </div>
-                <button>Cerrar sesión</button>
+
+                <Ruta icono='fas fa-sign-out-alt' ruta='/Index' nombre='Cerrar Sesion' />
+              
             </nav>
     )}
 
