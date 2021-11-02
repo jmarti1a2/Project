@@ -10,7 +10,7 @@ function Login() {
                 <input className='appearance-none relative-block w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md focus:ring-indigo-300 focus:outline-none' type='email' placeholder='example@direccion.com' required/>
                 <input className='appearance-none relative-block w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md focus:ring-indigo-300 focus:outline-none' required type='password' required/>
                 </div>
-                <div className='flex justify-between'>
+                <div className='flex justify-between py-2'>
                     <div>
                         <label htmlFor='recuerdáme'>
                         <input type='checkbox' name='recuerdame' />
@@ -22,17 +22,18 @@ function Login() {
                         <Link to='/'>¿Olvidaste tu contraseña?</Link>
                     </div>
                 </div>
-               
-                <div>
-                    <Link to='/admin'>
-                        <button type='submit'>Iniciar Sesión</button>
-                    </Link>                   
-                </div>
-                <div>
-                    o
-                </div>
-                <div>
-                    <button>Continua con Google</button>
+                <div className='flex-col justify-center items-center text-center py-6'>
+                    <div className='py-1'>
+                        <Link to='/admin'>
+                            <button type='submit'>Iniciar Sesión</button>
+                        </Link>                   
+                    </div>
+                    <div>
+                        o
+                    </div>
+                    <div className='py-1'>
+                        <button>Continua con Google</button>
+                    </div>
                 </div>
             </form>
         </div>

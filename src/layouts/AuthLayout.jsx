@@ -11,10 +11,10 @@ const AuthLayout = ({children }) => {
            <i className='fas fa-home fa-2x cursor-pointer hover:text-indigo-500' />
                </Link>
             </div>
-            <div className='max-w-md w-full'>
+            <div className='max-w-md w-full flex flex-col justify-center items-center'>
                 <ImagenLogo/>
-            {children}
-        </div>
+                {children}
+            </div>
         </div> 
     )
     
