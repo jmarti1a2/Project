@@ -74,11 +74,11 @@ const TablaProductos = ({listaProductos})=>{
     },[listaProductos])
     
     return (
-        <div className='flex flex-col items-center justify-center'>
-            <h2 className='text-2xl font font-extrabold text-gray-800'>Todos los Productos</h2>
-            <table>
+        <div className='flex flex-col items-center justify-center w-full'>
+            <h2 className='text-2xl font font-extrabold text-gray-800 '>Todos los Productos</h2>
+            <table className='tabla'>
             <thead>
-                <tr>
+                <tr>    
                 <th>Identificador único</th>
                 <th>Descripción</th>
                 <th>Valor Unitario</th>

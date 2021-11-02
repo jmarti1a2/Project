@@ -27,7 +27,7 @@ const Sidebar = () => {
         const isActive = useActiveRoute(ruta)
 
         return (
-            <Link to={ruta}>
+            <Link to={ruta}> 
                 <button
                 className={`p-1 my-3 bg-${
                     isActive?'gray':'indigo'
