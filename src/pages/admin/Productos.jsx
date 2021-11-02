@@ -74,11 +74,11 @@ const TablaProductos = ({listaProductos})=>{
     },[listaProductos])
     
     return (
-        <div className='flex flex-col items-center justify-center'>
-            <h2 className='text-2xl font font-extrabold text-gray-800'>Todos los Productos</h2>
-            <table>
+        <div className='flex flex-col items-center justify-center w-full'>
+            <h2 className='text-2xl font font-extrabold text-gray-800 '>Todos los Productos</h2>
+            <table className='tabla'>
             <thead>
-                <tr>
+                <tr>    
                 <th>Identificador único</th>
                 <th>Descripción</th>
                 <th>Valor Unitario</th>
@@ -89,7 +89,7 @@ const TablaProductos = ({listaProductos})=>{
                 {listaProductos.map((producto)=>{
                     return (
                         <tr>
-                            <td>{producto.id}</td>
+                            <td>{producto._id}</td>
                             <td>{producto.descripcion}</td>
                             <td>{producto.valorUnitario}</td>
                             <td>{producto.estado}</td>
@@ -149,8 +149,8 @@ const FormularioCreacionProductos = ({setMostrarTabla,listaProductos,setProducto
                 name='id'
                 className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2' 
                 type='text' 
-                placeholder='Id'
-                required
+                placeholder='Id automatico'
+                
                 />
             </label>
             <label className='flex flex-col' htmlFor='descripcion'>
