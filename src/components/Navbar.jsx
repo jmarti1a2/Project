@@ -1,10 +1,14 @@
 import React from 'react'
+import Logo from 'media/Logo.png';
 import { Link } from 'react-router-dom'
 
 const Navbar = () => {
     return <nav className='bg-purple-300'>
         <ul className='flex w-full justify-between my-3'>
-            <li>Logo</li>
+            <li>
+            <img src={Logo} alt='imagen' className='Logo h-8 mx-4' />
+
+            </li>
             <li>Boton Nav1</li>
             <li>Navegacion2</li>
             <li>Navegacion3</li>
