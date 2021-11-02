@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom'
 
 const AuthLayout = ({children }) => {
     return (
-        <div className='min-h-screen flex flex-col items-center justify-center bg-gray-50 py-2 px-4 sm:px-6 lg:px-8'>
-           <div className='w-full flex items-start'>  
+        <div className='min-h-full flex flex-col items-center justify-center bg-gray-50 py-2 px-4 sm:px-6 lg:px-8'>
+           <div className='w-full h-16 flex items-start'>  
            <Link to='/'>
            <i className='fas fa-home cursor-pointer hover:text-indigo-500' />
                </Link>
