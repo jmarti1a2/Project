@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import axios from "axios";
+import { nanoid } from 'nanoid';
+import { Dialog, Tooltip } from '@material-ui/core';
 import 'react-toastify/dist/ReactToastify.css'
 
 
@@ -9,9 +11,9 @@ const Productos = () => {
     const [productos,setProductos] = useState([])
     const [textoBoton,setTextoBoton] = useState('Crear nuevo Producto');
     const [colorBoton, setColorBoton]= useState('indigo')
+    const [ejecutarConsulta, setEjecutarConsulta]=useState(true)
 
     useEffect(()=>{
-
         const obtenerProductos = async()=>{
             const options = {method: 'GET', url: 'http://localhost:5000/productos/'};
         await axios
@@ -23,10 +25,16 @@ const Productos = () => {
             console.error(error);
         });
         }
+        if (ejecutarConsulta)
+        obtenerProductos()
+        setEjecutarConsulta(false);
+
+    },[ejecutarConsulta])
+
+    useEffect(()=>{    
         //obtener lista de productos desde el backend
     if(mostrarTabla){
-        obtenerProductos()
-
+        setEjecutarConsulta(true)
     }
     },[mostrarTabla])
 
@@ -56,7 +64,7 @@ const Productos = () => {
             </div>
             
             {mostrarTabla ? (
-            <TablaProductos listaProductos={productos} /> 
+            <TablaProductos listaProductos={productos} setEjecutarConsulta={setEjecutarConsulta} /> 
             ): (
             <FormularioCreacionProductos 
             setMostrarTabla={setMostrarTabla}
@@ -68,7 +76,8 @@ const Productos = () => {
     )
 }
 
-const TablaProductos = ({listaProductos})=>{
+const TablaProductos = ({listaProductos, setEjecutarConsulta})=>{
+
     useEffect(()=>{
         console.log('este es el listado de productos en el componente tabla', listaProductos)
     },[listaProductos])
@@ -76,6 +85,7 @@ const TablaProductos = ({listaProductos})=>{
     return (
         <div className='flex flex-col items-center justify-center w-full'>
             <h2 className='text-2xl font font-extrabold text-gray-800'>Todos los Productos</h2>
+            
             <table className='tabla'>
             <thead>
                 <tr>    
@@ -83,26 +93,192 @@ const TablaProductos = ({listaProductos})=>{
                 <th>Descripción</th>
                 <th>Valor Unitario</th>
                 <th>Estado</th>
+                <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 {listaProductos.map((producto)=>{
                     return (
-                        <tr>
-                            <td>{producto._id}</td>
-                            <td>{producto.descripcion}</td>
-                            <td>{producto.valorUnitario}</td>
-                            <td>{producto.estado}</td>
-                        </tr>
-                    )
+                        <FilaProducto  
+                        key={nanoid()} 
+                        producto={producto} 
+                        setEjecutarConsulta={setEjecutarConsulta}/>   
+                    )               
                 })}
             </tbody>
         </table>
+       
         </div>
         
     )
     
 }
+
+const FilaProducto = ({producto, setEjecutarConsulta})=> {
+    const [edit, setEdit] = useState(false)
+    const [openDialog,setOpenDialog] = useState(false)
+    const [infoNuevoProducto, setInfoNuevoProducto]= useState({
+        _id:producto._id,
+        descripcion:producto.descripcion,
+        valorUnitario:producto.valorUnitario,
+        estado:producto.estado
+    })
+
+    const actualizarProducto =async()=>{      
+        console.log(infoNuevoProducto)
+        //enviar info al backend
+        const options = {
+            method: 'PATCH',
+            url: 'http://localhost:5000/productos/editar',
+            headers: {'Content-Type': 'application/json'},
+            data: {...infoNuevoProducto, id: producto._id          }
+          };
+          
+          await axios
+          .request(options)
+          .then(function (response) {
+            console.log(response.data);
+            toast.success('producto editado con éxito')
+            setEdit(false)
+            setEjecutarConsulta(true)
+          })
+          .catch(function (error) {
+            toast.error('error modificando el producto')
+            console.error(error);
+          });
+
+
+    }
+
+    const eliminarProducto =async()=>{
+        const options = {
+            method: 'DELETE',
+            url: 'http://localhost:5000/productos/eliminar',
+            headers: {'Content-Type': 'application/json'},
+            data: {id: producto._id}
+          };
+          
+          await axios.request(options).then(function (response) {
+            console.log(response.data);
+            toast.success('producto eliminado con éxito')
+            setEjecutarConsulta(true)
+        }).catch(function (error) {
+            console.error(error);
+            toast.error('error eliminando producto')
+        });
+        setOpenDialog(false)
+    }
+
+    return(
+        <tr>
+            {edit?(
+                <>
+                
+                    <td>
+                        <input className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2' 
+                        type="text" 
+                        value={infoNuevoProducto._id}
+                        onChange={e=>setInfoNuevoProducto({...infoNuevoProducto, _id: e.target.value})}
+                         />
+                    </td>
+
+                    <td><input className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2' 
+                    type="text" 
+                    value={infoNuevoProducto.descripcion}
+                    onChange={e=>setInfoNuevoProducto({...infoNuevoProducto, descripcion: e.target.value})}
+
+                    />
+                    </td>
+
+                    <td><input className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2' 
+                    type="text" 
+                    value={infoNuevoProducto.valorUnitario}
+                    onChange={e=>setInfoNuevoProducto({...infoNuevoProducto, valorUnitario: e.target.value})}
+                    />
+                    </td>
+
+                    <td><input className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2' 
+                    type="text" 
+                    value={infoNuevoProducto.estado}
+                    onChange={e=>setInfoNuevoProducto({...infoNuevoProducto, estado: e.target.value})}
+                    />
+                    </td>
+                </>
+                         
+            ):(
+            <>  
+            <td>{producto._id}</td>
+            <td>{producto.descripcion}</td>
+            <td>{producto.valorUnitario}</td>
+            <td>{producto.estado}</td>
+            </>
+            )}
+            
+            <td>
+                <div className='flex w-full justify-around'>
+                    {edit? (
+                    <>
+                    <Tooltip title='Confirmar Edición'arrow placement='top'>
+                        <i 
+                        onClick={()=> actualizarProducto()}
+                        className='fas fa-check text-blue-100 hover:text-blue-400'
+                        />                   
+                    </Tooltip> 
+                    <Tooltip title='Cancelar Edición' arrow placement='top'>
+                        <i 
+                        onClick={()=> setEdit(!edit)} 
+                        className='fas fa-ban text-gray-900 hover:text-white' 
+                        />
+                    </Tooltip>
+
+                    </>  
+                    ):(
+                    <>
+                    <Tooltip title='Editar producto' arrow placement='top'>
+                        <i 
+                        onClick={()=> setEdit(!edit)} 
+                        className='fas fa-edit text-gray-900 hover:text-white' 
+                        />
+                    </Tooltip>
+                    <Tooltip title='Eliminar producto' arrow placement='top'>
+                    <i 
+                    onClick={()=>setOpenDialog(true)} 
+                    className='fas fa-trash-alt text-red-600 hover:text-red-300' 
+                    />
+                    </Tooltip>
+                    </>
+                    )}
+                </div>
+                <Dialog open={openDialog}>
+                                    
+                    <div className='p-8 flex flex-col'>
+                        <h1 className='text-gray-900 text-2xl font-bold'>¿Está seguro de eliminar el producto?
+                        </h1>
+                        <div className='flex w-full items-center justify-center my-4'>
+                        <button 
+                        onClick={()=> eliminarProducto()}
+                        className='mx-2 px-4 py-2 bg-green-500 text-white hover:bg-green-700'
+                        >
+                            Si
+                        </button>
+                        <button onClick={()=>setOpenDialog(false)} className='mx-2 px-4 py-2 bg-red-500 text-white hover:bg-red-700'
+                        >
+                            No
+                        </button>
+
+                        </div>
+                    </div>
+                    
+                </Dialog>
+            
+
+            </td>
+            
+        </tr>
+
+    )
+}
+
 const FormularioCreacionProductos = ({setMostrarTabla,listaProductos,setProductos})=>{
     const form= useRef(null)
         
