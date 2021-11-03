@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.tabla{
+    width: 100%;
+}
+
 .tabla td,
 .tabla th{
     padding: 8px;
@@ -14,4 +18,13 @@
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: left;
+}
+
+.tabla tr:nth-child(even){
+    background-color: #bcdef1;
+}
+
+.tabla tr:hover{
+    background-color: rgb(88, 44, 247);
+    cursor:pointer;
 }
