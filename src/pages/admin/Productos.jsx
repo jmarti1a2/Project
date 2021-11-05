@@ -4,6 +4,7 @@ import axios from "axios";
 import { nanoid } from 'nanoid';
 import { Dialog, Tooltip } from '@material-ui/core';
 import 'react-toastify/dist/ReactToastify.css'
+//import ReactLoading from 'react-loading';
 
 
 const Productos = () => {
@@ -12,6 +13,8 @@ const Productos = () => {
     const [textoBoton,setTextoBoton] = useState('Crear nuevo Producto');
     const [colorBoton, setColorBoton]= useState('indigo')
     const [ejecutarConsulta, setEjecutarConsulta]=useState(true)
+    //const [loading, setLoading] = useState(false);
+
 
     useEffect(()=>{
         const obtenerProductos = async()=>{
@@ -114,11 +117,23 @@ const TablaProductos = ({listaProductos, setEjecutarConsulta})=>{
     
 }
 
+const crearProducto = async (data, successCallback, errorCallback) => {
+    const options = {
+      method: 'POST',
+      url: 'http://localhost:5000/productos/editar',
+      headers: { 'Content-Type': 'application/json'},
+      data,
+    };
+    await axios.request(options).then(successCallback).catch(errorCallback);
+  };
+
+
+
 const FilaProducto = ({producto, setEjecutarConsulta})=> {
     const [edit, setEdit] = useState(false)
     const [openDialog,setOpenDialog] = useState(false)
     const [infoNuevoProducto, setInfoNuevoProducto]= useState({
-        _id:producto._id,
+        //_id:producto._id,
         descripcion:producto.descripcion,
         valorUnitario:producto.valorUnitario,
         estado:producto.estado
@@ -131,7 +146,7 @@ const FilaProducto = ({producto, setEjecutarConsulta})=> {
             method: 'PATCH',
             url: 'http://localhost:5000/productos/editar',
             headers: {'Content-Type': 'application/json'},
-            data: {...infoNuevoProducto, id: producto._id          }
+            data: {...infoNuevoProducto, id: producto.id          }
           };
           
           await axios
@@ -158,11 +173,14 @@ const FilaProducto = ({producto, setEjecutarConsulta})=> {
             data: {id: producto._id}
           };
           
-          await axios.request(options).then(function (response) {
+          await axios
+          .request(options)
+          .then(function (response) {
             console.log(response.data);
             toast.success('producto eliminado con éxito')
             setEjecutarConsulta(true)
-        }).catch(function (error) {
+        })
+        .catch(function (error) {
             console.error(error);
             toast.error('error eliminando producto')
         });
@@ -292,11 +310,34 @@ const FormularioCreacionProductos = ({setMostrarTabla,listaProductos,setProducto
             nuevoProducto[key]=value
         })
 
+        await crearProducto(
+            {
+                descripcion: nuevoProducto.descripcion,
+                valorUnitario:nuevoProducto.valorUnitario,
+                estado:nuevoProducto.estado,
+            },
+            (response)=>{
+              console.log(response.data)  
+              toast.success('producto agregado con éxito')
+            },
+            (error)=> {
+                console.error(error);
+                toast.error('error creando producto')
+            }
+        
+        
+            )   
+
+
+
+
+
+
         const options = {
             method: 'POST',
             url: 'http://localhost:5000/productos/nuevo',
             headers: {'Content-Type': 'application/json'},
-            data: {id: nuevoProducto.id, descripcion: nuevoProducto.descripcion, valorUnitario: nuevoProducto.valorUnitario, estado: nuevoProducto.estado}
+            data: {descripcion: nuevoProducto.descripcion, valorUnitario: nuevoProducto.valorUnitario, estado: nuevoProducto.estado}
           };
 
         await axios
@@ -319,16 +360,7 @@ const FormularioCreacionProductos = ({setMostrarTabla,listaProductos,setProducto
     <div className='flex flex-col items-center justify-center'>
         <h2 className='text-2xl font font-extrabold text-gray-800'>CREAR NUEVO PRODUCTO</h2>
         <form ref={form} onSubmit={submitForm} className='flex flex-col'>
-            <label  className='flex flex-col' htmlFor='id'>
-                Identificador Unico
-                <input 
-                name='id'
-                className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2' 
-                type='text' 
-                placeholder='Id automatico'
-                
-                />
-            </label>
+            
             <label className='flex flex-col' htmlFor='descripcion'>
                 Descripción
                 <input 
