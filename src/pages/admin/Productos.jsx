@@ -6,7 +6,6 @@ import { Dialog, Tooltip } from '@material-ui/core';
 import 'react-toastify/dist/ReactToastify.css'
 //import ReactLoading from 'react-loading';
 
-
 const Productos = () => {
     const [mostrarTabla,setMostrarTabla ] = useState(true);
     const [productos,setProductos] = useState([])
@@ -42,6 +41,13 @@ const Productos = () => {
     },[mostrarTabla])
 
 
+    useEffect(()=>{    
+        //obtener lista de productos desde el backend
+    if(mostrarTabla){  
+        setEjecutarConsulta(true)    
+    }
+    },[mostrarTabla])
+
     useEffect(()=> {
         if(mostrarTabla){
             setTextoBoton('Crear nuevo Producto');
@@ -52,6 +58,7 @@ const Productos = () => {
             setColorBoton('indigo');
         }
     },[mostrarTabla])
+    
     return (
         <div className='flex h-full w-full flex-col items-center justify-start p-8'>
             <div className='flex flex-col'>
@@ -75,12 +82,11 @@ const Productos = () => {
             setProductos={setProductos}/>
             )}  
             <ToastContainer position='bottom-center' autoClose={5000}/> 
-        </div>
+        </div>  
     )
 }
 
 const TablaProductos = ({listaProductos, setEjecutarConsulta})=>{
-
     useEffect(()=>{
         console.log('este es el listado de productos en el componente tabla', listaProductos)
     },[listaProductos])
@@ -117,15 +123,7 @@ const TablaProductos = ({listaProductos, setEjecutarConsulta})=>{
     
 }
 
-const crearProducto = async (data, successCallback, errorCallback) => {
-    const options = {
-      method: 'POST',
-      url: 'http://localhost:5000/productos/editar',
-      headers: { 'Content-Type': 'application/json'},
-      data,
-    };
-    await axios.request(options).then(successCallback).catch(errorCallback);
-  };
+
 
 
 
@@ -144,9 +142,9 @@ const FilaProducto = ({producto, setEjecutarConsulta})=> {
         //enviar info al backend
         const options = {
             method: 'PATCH',
-            url: 'http://localhost:5000/productos/editar',
+            url: 'http://localhost:5000/productos',
             headers: {'Content-Type': 'application/json'},
-            data: {...infoNuevoProducto, id: producto.id          }
+            data: {...infoNuevoProducto, id: producto._id          }
           };
           
           await axios
@@ -168,7 +166,7 @@ const FilaProducto = ({producto, setEjecutarConsulta})=> {
     const eliminarProducto =async()=>{
         const options = {
             method: 'DELETE',
-            url: 'http://localhost:5000/productos/eliminar',
+            url: 'http://localhost:5000/productos',
             headers: {'Content-Type': 'application/json'},
             data: {id: producto._id}
           };
@@ -225,7 +223,7 @@ const FilaProducto = ({producto, setEjecutarConsulta})=> {
                          
             ):(
             <>  
-            <td>{producto._id}</td>
+            <td>{producto._id.slice(18)}</td>
             <td>{producto.descripcion}</td>
             <td>{producto.valorUnitario}</td>
             <td>{producto.estado}</td>
@@ -300,7 +298,6 @@ const FilaProducto = ({producto, setEjecutarConsulta})=> {
 const FormularioCreacionProductos = ({setMostrarTabla,listaProductos,setProductos})=>{
     const form= useRef(null)
         
-
     const submitForm= async (e)=>{
         e.preventDefault()
         const fd = new FormData(form.current)
@@ -309,33 +306,11 @@ const FormularioCreacionProductos = ({setMostrarTabla,listaProductos,setProducto
         fd.forEach((value, key) => {
             nuevoProducto[key]=value
         })
-
-        await crearProducto(
-            {
-                descripcion: nuevoProducto.descripcion,
-                valorUnitario:nuevoProducto.valorUnitario,
-                estado:nuevoProducto.estado,
-            },
-            (response)=>{
-              console.log(response.data)  
-              toast.success('producto agregado con éxito')
-            },
-            (error)=> {
-                console.error(error);
-                toast.error('error creando producto')
-            }
-        
-        
-            )   
-
-
-
-
-
+ 
 
         const options = {
             method: 'POST',
-            url: 'http://localhost:5000/productos/nuevo',
+            url: 'http://localhost:5000/productos',
             headers: {'Content-Type': 'application/json'},
             data: {descripcion: nuevoProducto.descripcion, valorUnitario: nuevoProducto.valorUnitario, estado: nuevoProducto.estado}
           };
