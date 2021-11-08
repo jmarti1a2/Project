@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
-import axios from "axios";
 import { nanoid } from 'nanoid';
 import { Dialog, Tooltip } from '@material-ui/core';
+import { obtenerProductos, crearProducto, editarProducto, eliminarProducto } from 'utils/api';
 import 'react-toastify/dist/ReactToastify.css'
 //import ReactLoading from 'react-loading';
 
@@ -14,25 +14,23 @@ const Productos = () => {
     const [ejecutarConsulta, setEjecutarConsulta]=useState(true)
     //const [loading, setLoading] = useState(false);
 
-
     useEffect(()=>{
-        const obtenerProductos = async()=>{
-            const options = {method: 'GET', url: 'http://localhost:5000/productos/'};
-        await axios
-        .request(options)
-        .then(function (response) {
-            setProductos(response.data)
-        })
-        .catch(function (error) {
-            console.error(error);
-        });
+        console.log('consulta', ejecutarConsulta)
+        if (ejecutarConsulta) {
+            obtenerProductos(
+                (response) => {
+                    setProductos(response.data);
+                },
+                (error)=> {
+                    console.error(error)
+                }
+            )      
+            setEjecutarConsulta(false)
         }
-        if (ejecutarConsulta)
-        obtenerProductos()
-        setEjecutarConsulta(false);
-
     },[ejecutarConsulta])
 
+    
+    
     useEffect(()=>{    
         //obtener lista de productos desde el backend
     if(mostrarTabla){
@@ -124,84 +122,63 @@ const TablaProductos = ({listaProductos, setEjecutarConsulta})=>{
 }
 
 
-
-
-
 const FilaProducto = ({producto, setEjecutarConsulta})=> {
     const [edit, setEdit] = useState(false)
     const [openDialog,setOpenDialog] = useState(false)
     const [infoNuevoProducto, setInfoNuevoProducto]= useState({
-        //_id:producto._id,
+        _id:producto._id,
         descripcion:producto.descripcion,
         valorUnitario:producto.valorUnitario,
         estado:producto.estado
     })
 
-    const actualizarProducto =async()=>{      
-        console.log(infoNuevoProducto)
-        //enviar info al backend
-        const options = {
-            method: 'PATCH',
-            url: `http://localhost:5000/productos/${producto._id}`,
-            headers: {'Content-Type': 'application/json'},
-            data: {...infoNuevoProducto, id: producto._id          }
-          };
-          
-          await axios
-          .request(options)
-          .then(function (response) {
-            console.log(response.data);
-            toast.success('producto editado con éxito')
-            setEdit(false)
-            setEjecutarConsulta(true)
-          })
-          .catch(function (error) {
-            toast.error('error modificando el producto')
-            console.error(error);
-          });
-
-
+    const actualizarProducto =async()=>{ 
+        
+        await editarProducto(
+            producto._id, 
+            {
+                descripcion:infoNuevoProducto.descripcion, 
+                valorUnitario:infoNuevoProducto.valorUnitario, 
+                estado:infoNuevoProducto.estado,
+            }, 
+            (response)=>{
+                console.log(response.data);
+                toast.success('producto editado con éxito')
+                setEdit(false)
+                setEjecutarConsulta(true)
+            },
+            (error) =>{
+                toast.error('error modificando el producto')
+                console.error(error);
+            } 
+          )
     }
 
-    const eliminarProducto =async()=>{
-        const options = {
-            method: 'DELETE',
-            url: `http://localhost:5000/productos/${producto._id}`,
-            headers: {'Content-Type': 'application/json'},
-            data: {id: producto._id}
-          };
-          
-          await axios
-          .request(options)
-          .then(function (response) {
-            console.log(response.data);
-            toast.success('producto eliminado con éxito')
-            setEjecutarConsulta(true)
+    const deleteProducto =async()=>{
+        await eliminarProducto(
+            producto._id,
+            (response) => {
+                console.log(response.data)
+                toast.success('producto eliminado con exito')
+                setEjecutarConsulta(true)
+        },error=>{
+            console.error(error)
+            toast.error('error eliminando el producto')
+
         })
-        .catch(function (error) {
-            console.error(error);
-            toast.error('error eliminando producto')
-        });
-        setOpenDialog(false)
-    }
+        setOpenDialog(false)    
+    } 
 
     return(
         <tr>
             {edit?(
                 <>
-                
-                    <td>
-                        <input className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2' 
-                        type="text" 
-                        value={infoNuevoProducto._id}
-                        onChange={e=>setInfoNuevoProducto({...infoNuevoProducto, _id: e.target.value})}
-                         />
-                    </td>
-
+                    <td>{infoNuevoProducto._id}</td>             
                     <td><input className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2' 
                     type="text" 
                     value={infoNuevoProducto.descripcion}
-                    onChange={e=>setInfoNuevoProducto({...infoNuevoProducto, descripcion: e.target.value})}
+                    onChange={e=>
+                        setInfoNuevoProducto({...infoNuevoProducto, descripcion: e.target.value})}
 
                     />
                     </td>
@@ -209,14 +186,18 @@ const FilaProducto = ({producto, setEjecutarConsulta})=> {
                     <td><input className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2' 
                     type="text" 
                     value={infoNuevoProducto.valorUnitario}
-                    onChange={e=>setInfoNuevoProducto({...infoNuevoProducto, valorUnitario: e.target.value})}
+                    onChange={e=>
+                        setInfoNuevoProducto({...infoNuevoProducto, valorUnitario: e.target.value})}
                     />
                     </td>
 
-                    <td><input className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2' 
+                    <td><input 
+                    className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2' 
                     type="text" 
                     value={infoNuevoProducto.estado}
-                    onChange={e=>setInfoNuevoProducto({...infoNuevoProducto, estado: e.target.value})}
+                    onChange={e=>
+                        setInfoNuevoProducto({...infoNuevoProducto, estado: e.target.value})
+                    }
                     />
                     </td>
                 </>
@@ -268,16 +249,18 @@ const FilaProducto = ({producto, setEjecutarConsulta})=> {
                 <Dialog open={openDialog}>
                                     
                     <div className='p-8 flex flex-col'>
-                        <h1 className='text-gray-900 text-2xl font-bold'>¿Está seguro de eliminar el producto?
+                        <h1 className='text-gray-900 text-2xl font-bold'>
+                            ¿Está seguro de eliminar el producto?
                         </h1>
                         <div className='flex w-full items-center justify-center my-4'>
                         <button 
-                        onClick={()=> eliminarProducto()}
+                        onClick={()=> deleteProducto()}
                         className='mx-2 px-4 py-2 bg-green-500 text-white hover:bg-green-700'
                         >
                             Si
                         </button>
-                        <button onClick={()=>setOpenDialog(false)} className='mx-2 px-4 py-2 bg-red-500 text-white hover:bg-red-700'
+                        <button onClick={()=>setOpenDialog(false)} 
+                        className='mx-2 px-4 py-2 bg-red-500 text-white hover:bg-red-700'
                         >
                             No
                         </button>
@@ -305,27 +288,23 @@ const FormularioCreacionProductos = ({setMostrarTabla,listaProductos,setProducto
         const nuevoProducto = {}    
         fd.forEach((value, key) => {
             nuevoProducto[key]=value
-        })
- 
-
-        const options = {
-            method: 'POST',
-            url: 'http://localhost:5000/productos',
-            headers: {'Content-Type': 'application/json'},
-            data: {descripcion: nuevoProducto.descripcion, valorUnitario: nuevoProducto.valorUnitario, estado: nuevoProducto.estado}
-          };
-
-        await axios
-            .request(options)
-            .then(function (response) {
-            console.log(response.data);
-            toast.success('producto agregado con éxito')
-          })
-            .catch(function (error) {
-                console.error(error);
-                toast.error('Error creando un producto')
-          });
-
+        })          
+        
+       await crearProducto(
+           {
+           descripcion: nuevoProducto.descripcion,
+           valorUnitario: nuevoProducto.valorUnitario,
+           estado: nuevoProducto.estado,
+       },     
+       (response)=>{
+           console.log(response.data)
+            toast.success('Producto agregado con exito')
+       },
+       (error)=>{
+            console.error(error)
+            toast.error('Error creando un producto')
+       }
+       )
 
         setMostrarTabla(true)
     }
