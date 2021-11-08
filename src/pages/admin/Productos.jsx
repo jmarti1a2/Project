@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
-import axios from "axios";
 import { nanoid } from 'nanoid';
 import { Dialog, Tooltip } from '@material-ui/core';
+import { obtenerProductos, crearProducto, editarProducto, eliminarProducto } from 'utils/api';
 import 'react-toastify/dist/ReactToastify.css'
-
+//import ReactLoading from 'react-loading';
 
 const Productos = () => {
     const [mostrarTabla,setMostrarTabla ] = useState(true);
@@ -12,25 +12,25 @@ const Productos = () => {
     const [textoBoton,setTextoBoton] = useState('Crear nuevo Producto');
     const [colorBoton, setColorBoton]= useState('indigo')
     const [ejecutarConsulta, setEjecutarConsulta]=useState(true)
+    //const [loading, setLoading] = useState(false);
 
     useEffect(()=>{
-        const obtenerProductos = async()=>{
-            const options = {method: 'GET', url: 'http://localhost:5000/productos/'};
-        await axios
-        .request(options)
-        .then(function (response) {
-            setProductos(response.data)
-        })
-        .catch(function (error) {
-            console.error(error);
-        });
+        console.log('consulta', ejecutarConsulta)
+        if (ejecutarConsulta) {
+            obtenerProductos(
+                (response) => {
+                    setProductos(response.data);
+                },
+                (error)=> {
+                    console.error(error)
+                }
+            )      
+            setEjecutarConsulta(false)
         }
-        if (ejecutarConsulta)
-        obtenerProductos()
-        setEjecutarConsulta(false);
-
     },[ejecutarConsulta])
 
+    
+    
     useEffect(()=>{    
         //obtener lista de productos desde el backend
     if(mostrarTabla){
@@ -38,6 +38,13 @@ const Productos = () => {
     }
     },[mostrarTabla])
 
+
+    useEffect(()=>{    
+        //obtener lista de productos desde el backend
+    if(mostrarTabla){  
+        setEjecutarConsulta(true)    
+    }
+    },[mostrarTabla])
 
     useEffect(()=> {
         if(mostrarTabla){
@@ -49,6 +56,7 @@ const Productos = () => {
             setColorBoton('indigo');
         }
     },[mostrarTabla])
+    
     return (
         <div className='flex h-full w-full flex-col items-center justify-start p-8'>
             <div className='flex flex-col'>
@@ -72,12 +80,11 @@ const Productos = () => {
             setProductos={setProductos}/>
             )}  
             <ToastContainer position='bottom-center' autoClose={5000}/> 
-        </div>
+        </div>  
     )
 }
 
 const TablaProductos = ({listaProductos, setEjecutarConsulta})=>{
-
     useEffect(()=>{
         console.log('este es el listado de productos en el componente tabla', listaProductos)
     },[listaProductos])
@@ -114,6 +121,7 @@ const TablaProductos = ({listaProductos, setEjecutarConsulta})=>{
     
 }
 
+
 const FilaProducto = ({producto, setEjecutarConsulta})=> {
     const [edit, setEdit] = useState(false)
     const [openDialog,setOpenDialog] = useState(false)
@@ -124,68 +132,53 @@ const FilaProducto = ({producto, setEjecutarConsulta})=> {
         estado:producto.estado
     })
 
-    const actualizarProducto =async()=>{      
-        console.log(infoNuevoProducto)
-        //enviar info al backend
-        const options = {
-            method: 'PATCH',
-            url: 'http://localhost:5000/productos/editar',
-            headers: {'Content-Type': 'application/json'},
-            data: {...infoNuevoProducto, id: producto._id          }
-          };
-          
-          await axios
-          .request(options)
-          .then(function (response) {
-            console.log(response.data);
-            toast.success('producto editado con éxito')
-            setEdit(false)
-            setEjecutarConsulta(true)
-          })
-          .catch(function (error) {
-            toast.error('error modificando el producto')
-            console.error(error);
-          });
-
-
+    const actualizarProducto =async()=>{ 
+        
+        await editarProducto(
+            producto._id, 
+            {
+                descripcion:infoNuevoProducto.descripcion, 
+                valorUnitario:infoNuevoProducto.valorUnitario, 
+                estado:infoNuevoProducto.estado,
+            }, 
+            (response)=>{
+                console.log(response.data);
+                toast.success('producto editado con éxito')
+                setEdit(false)
+                setEjecutarConsulta(true)
+            },
+            (error) =>{
+                toast.error('error modificando el producto')
+                console.error(error);
+            } 
+          )
     }
 
-    const eliminarProducto =async()=>{
-        const options = {
-            method: 'DELETE',
-            url: 'http://localhost:5000/productos/eliminar',
-            headers: {'Content-Type': 'application/json'},
-            data: {id: producto._id}
-          };
-          
-          await axios.request(options).then(function (response) {
-            console.log(response.data);
-            toast.success('producto eliminado con éxito')
-            setEjecutarConsulta(true)
-        }).catch(function (error) {
-            console.error(error);
-            toast.error('error eliminando producto')
-        });
-        setOpenDialog(false)
-    }
+    const deleteProducto =async()=>{
+        await eliminarProducto(
+            producto._id,
+            (response) => {
+                console.log(response.data)
+                toast.success('producto eliminado con exito')
+                setEjecutarConsulta(true)
+        },error=>{
+            console.error(error)
+            toast.error('error eliminando el producto')
+
+        })
+        setOpenDialog(false)    
+    } 
 
     return(
         <tr>
             {edit?(
                 <>
-                
-                    <td>
-                        <input className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2' 
-                        type="text" 
-                        value={infoNuevoProducto._id}
-                        onChange={e=>setInfoNuevoProducto({...infoNuevoProducto, _id: e.target.value})}
-                         />
-                    </td>
-
+                    <td>{infoNuevoProducto._id}</td>             
                     <td><input className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2' 
                     type="text" 
                     value={infoNuevoProducto.descripcion}
-                    onChange={e=>setInfoNuevoProducto({...infoNuevoProducto, descripcion: e.target.value})}
+                    onChange={e=>
+                        setInfoNuevoProducto({...infoNuevoProducto, descripcion: e.target.value})}
 
                     />
                     </td>
@@ -193,21 +186,25 @@ const FilaProducto = ({producto, setEjecutarConsulta})=> {
                     <td><input className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2' 
                     type="text" 
                     value={infoNuevoProducto.valorUnitario}
-                    onChange={e=>setInfoNuevoProducto({...infoNuevoProducto, valorUnitario: e.target.value})}
+                    onChange={e=>
+                        setInfoNuevoProducto({...infoNuevoProducto, valorUnitario: e.target.value})}
                     />
                     </td>
 
-                    <td><input className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2' 
+                    <td><input 
+                    className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2' 
                     type="text" 
                     value={infoNuevoProducto.estado}
-                    onChange={e=>setInfoNuevoProducto({...infoNuevoProducto, estado: e.target.value})}
+                    onChange={e=>
+                        setInfoNuevoProducto({...infoNuevoProducto, estado: e.target.value})
+                    }
                     />
                     </td>
                 </>
                          
             ):(
             <>  
-            <td>{producto._id}</td>
+            <td>{producto._id.slice(18)}</td>
             <td>{producto.descripcion}</td>
             <td>{producto.valorUnitario}</td>
             <td>{producto.estado}</td>
@@ -252,16 +249,18 @@ const FilaProducto = ({producto, setEjecutarConsulta})=> {
                 <Dialog open={openDialog}>
                                     
                     <div className='p-8 flex flex-col'>
-                        <h1 className='text-gray-900 text-2xl font-bold'>¿Está seguro de eliminar el producto?
+                        <h1 className='text-gray-900 text-2xl font-bold'>
+                            ¿Está seguro de eliminar el producto?
                         </h1>
                         <div className='flex w-full items-center justify-center my-4'>
                         <button 
-                        onClick={()=> eliminarProducto()}
+                        onClick={()=> deleteProducto()}
                         className='mx-2 px-4 py-2 bg-green-500 text-white hover:bg-green-700'
                         >
                             Si
                         </button>
-                        <button onClick={()=>setOpenDialog(false)} className='mx-2 px-4 py-2 bg-red-500 text-white hover:bg-red-700'
+                        <button onClick={()=>setOpenDialog(false)} 
+                        className='mx-2 px-4 py-2 bg-red-500 text-white hover:bg-red-700'
                         >
                             No
                         </button>
@@ -282,7 +281,6 @@ const FilaProducto = ({producto, setEjecutarConsulta})=> {
 const FormularioCreacionProductos = ({setMostrarTabla,listaProductos,setProductos})=>{
     const form= useRef(null)
         
-
     const submitForm= async (e)=>{
         e.preventDefault()
         const fd = new FormData(form.current)
@@ -290,90 +288,78 @@ const FormularioCreacionProductos = ({setMostrarTabla,listaProductos,setProducto
         const nuevoProducto = {}    
         fd.forEach((value, key) => {
             nuevoProducto[key]=value
-        })
-
-        const options = {
-            method: 'POST',
-            url: 'http://localhost:5000/productos/nuevo',
-            headers: {'Content-Type': 'application/json'},
-            data: {id: nuevoProducto.id, descripcion: nuevoProducto.descripcion, valorUnitario: nuevoProducto.valorUnitario, estado: nuevoProducto.estado}
-          };
-
-        await axios
-            .request(options)
-            .then(function (response) {
-            console.log(response.data);
-            toast.success('producto agregado con éxito')
-          })
-            .catch(function (error) {
-                console.error(error);
-                toast.error('Error creando un producto')
-          });
-
+        })          
+        
+       await crearProducto(
+           {
+           descripcion: nuevoProducto.descripcion,
+           valorUnitario: nuevoProducto.valorUnitario,
+           estado: nuevoProducto.estado,
+       },     
+       (response)=>{
+           console.log(response.data)
+            toast.success('Producto agregado con exito')
+       },
+       (error)=>{
+            console.error(error)
+            toast.error('Error creando un producto')
+       }
+       )
 
         setMostrarTabla(true)
     }
         //identificar el caso de exito y mostrar un toast de exito
         //identificar el caso de error y mostrar un toast de error
     return (
-    <div className='flex flex-col items-center justify-center'>
-        <h2 className='text-2xl font font-extrabold text-gray-800'>CREAR NUEVO PRODUCTO</h2>
-        <form ref={form} onSubmit={submitForm} className='flex flex-col'>
-            <label  className='flex flex-col' htmlFor='id'>
-                Identificador Unico
-                <input 
-                name='id'
-                className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2' 
-                type='text' 
-                placeholder='Id automatico'
-                
-                />
-            </label>
-            <label className='flex flex-col' htmlFor='descripcion'>
-                Descripción
-                <input 
-                name='descripcion'
-                className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2' 
-                type='text ' 
-                placeholder='decripción del producto'
-                required
-                />
-            </label>
-            <label className='flex flex-col' htmlFor='valorUnitario'>
-                Valor Unitario
-                <input 
-                name='valorUnitario'
-                className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2' 
-                type='number' 
-                placeholder='valor unitario'
-                required
-                />
-            </label>
-            <label className='flex flex-col' htmlFor='estado'>
-                Estado
-                <select 
-                className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2'
-                name='estado'
-                required
-                defaultValue={0}
+        <div className='flex flex-col items-center justify-center'>
+            <h2 className='text-2xl font font-extrabold text-gray-800'>CREAR NUEVO PRODUCTO</h2>
+            <form ref={form} onSubmit={submitForm} className='flex flex-col'>
+
+                <label className='flex flex-col' htmlFor='descripcion'>
+                    Descripción
+                    <input
+                        name='descripcion'
+                        className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2'
+                        type='text '
+                        placeholder='decripción del producto'
+                        required
+                    />
+                </label>
+                <label className='flex flex-col' htmlFor='valorUnitario'>
+                    Valor Unitario
+                    <input
+                        name='valorUnitario'
+                        className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2'
+                        type='number'
+                        placeholder='valor unitario'
+                        required
+                    />
+                </label>
+                <label className='flex flex-col' htmlFor='estado'>
+                    Estado
+                    <select
+                        className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2'
+                        name='estado'
+                        required
+                        defaultValue={0}
+                    >
+                        <option disabled value={0}>
+                            Seleccione una opción</option>
+                        <option>Disponible</option>
+                        <option>No disponible</option>
+
+                    </select>
+
+                </label>
+                <button
+                    type='submit'
+                    className='col-span-2 bg-indigo-700 p-2 rounded-full shadow-md text-white'
                 >
-                    <option disabled value={0}>
-                        Seleccione una opción</option>
-                    <option>Disponible</option>
-                    <option>No disponible</option>
-                    
-                </select>
-                
-            </label>
-            <button 
-            type='submit'
-            className='col-span-2 bg-indigo-700 p-2 rounded-full shadow-md text-white'         
-        >                
-            Guardar Producto
-            </button>
-        </form>
-    </div>
+                    Guardar Producto
+                </button>
+            </form>
+        </div>
     )
-}   
+}
 
 export default Productos

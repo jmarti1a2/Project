@@ -1,5 +1,6 @@
 import React from 'react'
-// import React, { useEffect, useState, useRef } from 'react';
+ import React, { useEffect, useState, useRef } from 'react';
+import { obtenerUsuarios } from 'utils/api';
 // import { ToastContainer, toast } from 'react-toastify';
 // import axios from "axios";
 // import 'react-toastify/dist/ReactToastify.css'
@@ -255,6 +256,22 @@ import React from 'react'
 // export default Ventas
 
 const Ventas = () => {
+    const [vendedores,setVendedores]=useState([]);
+
+    useEffect(() => {
+        const fetchVendedores = async () => {
+            await obtenerUsuarios(
+                (response) => {
+                    setVendedores(response.data);
+                },
+                (error) => {
+                    console.error(error);
+                }
+            );
+    };
+    fetchVendedores();
+},[]);
+
     return(
         <div>
             <form className='flex flex-col'>
