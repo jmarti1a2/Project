@@ -8,6 +8,7 @@ import Usuarios from 'pages/admin/Usuarios';
 import Ventas from 'pages/admin/Ventas';
 import Index from 'pages/Index';
 import Login from 'pages/Login';
+import Test from 'pages/test';
 import Registro from 'pages/Registro';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import 'styles/styles.css'
@@ -16,7 +17,7 @@ function App() {
   return (
     <Router>
       <Switch>
-        <Route path={['/admin','/admin/clientes','/admin/productos','/admin/usuarios','/admin/ventas']}>
+        <Route path={['/admin','/admin/clientes','/admin/productos','/admin/usuarios','/admin/ventas','/test']}>
           <PrivateLayout>
             <Switch>
               <Route path='/admin/clientes'>
@@ -24,6 +25,9 @@ function App() {
               </Route>
               <Route path='/admin/productos'>
                 <Productos/>
+              </Route>
+              <Route path='/test'>
+                <Test/>
               </Route>
               <Route path='/admin/usuarios'>
                 <Usuarios/>

@@ -142,7 +142,7 @@ const FilaProducto = ({producto, setEjecutarConsulta})=> {
         //enviar info al backend
         const options = {
             method: 'PATCH',
-            url: 'http://localhost:5000/productos',
+            url: `http://localhost:5000/productos/${producto._id}`,
             headers: {'Content-Type': 'application/json'},
             data: {...infoNuevoProducto, id: producto._id          }
           };
@@ -166,7 +166,7 @@ const FilaProducto = ({producto, setEjecutarConsulta})=> {
     const eliminarProducto =async()=>{
         const options = {
             method: 'DELETE',
-            url: 'http://localhost:5000/productos',
+            url: `http://localhost:5000/productos/${producto._id}`,
             headers: {'Content-Type': 'application/json'},
             data: {id: producto._id}
           };
@@ -332,55 +332,55 @@ const FormularioCreacionProductos = ({setMostrarTabla,listaProductos,setProducto
         //identificar el caso de exito y mostrar un toast de exito
         //identificar el caso de error y mostrar un toast de error
     return (
-    <div className='flex flex-col items-center justify-center'>
-        <h2 className='text-2xl font font-extrabold text-gray-800'>CREAR NUEVO PRODUCTO</h2>
-        <form ref={form} onSubmit={submitForm} className='flex flex-col'>
-            
-            <label className='flex flex-col' htmlFor='descripcion'>
-                Descripción
-                <input 
-                name='descripcion'
-                className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2' 
-                type='text ' 
-                placeholder='decripción del producto'
-                required
-                />
-            </label>
-            <label className='flex flex-col' htmlFor='valorUnitario'>
-                Valor Unitario
-                <input 
-                name='valorUnitario'
-                className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2' 
-                type='number' 
-                placeholder='valor unitario'
-                required
-                />
-            </label>
-            <label className='flex flex-col' htmlFor='estado'>
-                Estado
-                <select 
-                className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2'
-                name='estado'
-                required
-                defaultValue={0}
+        <div className='flex flex-col items-center justify-center'>
+            <h2 className='text-2xl font font-extrabold text-gray-800'>CREAR NUEVO PRODUCTO</h2>
+            <form ref={form} onSubmit={submitForm} className='flex flex-col'>
+
+                <label className='flex flex-col' htmlFor='descripcion'>
+                    Descripción
+                    <input
+                        name='descripcion'
+                        className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2'
+                        type='text '
+                        placeholder='decripción del producto'
+                        required
+                    />
+                </label>
+                <label className='flex flex-col' htmlFor='valorUnitario'>
+                    Valor Unitario
+                    <input
+                        name='valorUnitario'
+                        className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2'
+                        type='number'
+                        placeholder='valor unitario'
+                        required
+                    />
+                </label>
+                <label className='flex flex-col' htmlFor='estado'>
+                    Estado
+                    <select
+                        className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2'
+                        name='estado'
+                        required
+                        defaultValue={0}
+                    >
+                        <option disabled value={0}>
+                            Seleccione una opción</option>
+                        <option>Disponible</option>
+                        <option>No disponible</option>
+
+                    </select>
+
+                </label>
+                <button
+                    type='submit'
+                    className='col-span-2 bg-indigo-700 p-2 rounded-full shadow-md text-white'
                 >
-                    <option disabled value={0}>
-                        Seleccione una opción</option>
-                    <option>Disponible</option>
-                    <option>No disponible</option>
-                    
-                </select>
-                
-            </label>
-            <button 
-            type='submit'
-            className='col-span-2 bg-indigo-700 p-2 rounded-full shadow-md text-white'         
-        >                
-            Guardar Producto
-            </button>
-        </form>
-    </div>
+                    Guardar Producto
+                </button>
+            </form>
+        </div>
     )
-}   
+}
 
 export default Productos
