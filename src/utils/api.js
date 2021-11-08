@@ -49,3 +49,5 @@ export const obtenerUsuarios = async (setProductos, setEjecutarConsulta= ()=>{})
         })
         setEjecutarConsulta(false)
 }
+
+
