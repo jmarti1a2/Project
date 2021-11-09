@@ -37,7 +37,32 @@ export const eliminarProducto = async (id,successCallback,errorCallback)=> {
 }
 
 
-export const obtenerUsuarios = async (setProductos, setEjecutarConsulta= ()=>{}) => {
+// CRUD para usuarios
+
+export const obtenerUsuarios = async (successCallback,errorCallback)=>{
+    const options = {
+        method: 'GET', 
+        url: 'http://localhost:5000/usuarios'};
+    
+    await axios.request(options).then(successCallback).catch(errorCallback)
+}
+
+
+//CRUD de ventas
+
+export const crearVenta = async (data,successCallback,errorCallback)=>{
+    const options = {
+        
+            method: 'POST',
+            url: 'http://localhost:5000/ventas',
+            headers: {'Content-Type': 'application/json'},
+            data,     
+    }
+    await axios.request(options).then(successCallback).catch(errorCallback)
+}
+
+
+/* export const obtenerUsuarios = async (setProductos, setEjecutarConsulta= ()=>{}) => {
     const options = { method: 'GET', url: 'http://localhost:5000/usuarios'}
     await axios 
         .request(options)
@@ -49,5 +74,5 @@ export const obtenerUsuarios = async (setProductos, setEjecutarConsulta= ()=>{})
         })
         setEjecutarConsulta(false)
 }
-
+ */
 

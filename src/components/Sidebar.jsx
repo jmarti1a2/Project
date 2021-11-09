@@ -1,12 +1,10 @@
 import useActiveRoute from 'hooks/useActiveRoute'
 import React from 'react'
-import { useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
-import { useEffect } from 'react/cjs/react.development'
+import { Link } from 'react-router-dom'
 import ImagenLogo from './ImagenLogo'
 
 
-const Sidebar = () => {
+const Sidebar = () =>{
     return (
             <nav className='hidden md:flex md:w-72 border border-gray-300 h-full flex-col bg-gray-300 p-5'>            
                 <Link to='/admin'>

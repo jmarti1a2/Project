@@ -1,6 +1,6 @@
-import React from 'react'
+/* import React from 'react'
  import React, { useEffect, useState, useRef } from 'react';
-import { obtenerUsuarios } from 'utils/api';
+import { obtenerUsuarios } from 'utils/api'; */
 // import { ToastContainer, toast } from 'react-toastify';
 // import axios from "axios";
 // import 'react-toastify/dist/ReactToastify.css'
@@ -255,7 +255,7 @@ import { obtenerUsuarios } from 'utils/api';
 
 // export default Ventas
 
-const Ventas = () => {
+/* const Ventas = () => {
     const [vendedores,setVendedores]=useState([]);
 
     useEffect(() => {
@@ -285,4 +285,4 @@ const Ventas = () => {
         </div>
     );
     };
-export default Ventas;
+export default Ventas; */
