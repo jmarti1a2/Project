@@ -1,6 +1,7 @@
-import React from 'react'
+//import React from 'react'
  import React, { useEffect, useState, useRef } from 'react';
 import { obtenerUsuarios } from 'utils/api';
+import { obtenerProductos } from 'utils/api';
 // import { ToastContainer, toast } from 'react-toastify';
 // import axios from "axios";
 // import 'react-toastify/dist/ReactToastify.css'
@@ -257,19 +258,33 @@ import { obtenerUsuarios } from 'utils/api';
 
 const Ventas = () => {
     const [vendedores,setVendedores]=useState([]);
+    const [productos,setProductos]=useState([]);
 
     useEffect(() => {
         const fetchVendedores = async () => {
             await obtenerUsuarios(
                 (response) => {
                     setVendedores(response.data);
-                },
+               },
                 (error) => {
                     console.error(error);
                 }
             );
     };
+        const fetchProductos = async () => {
+            await obtenerProductos(
+            (response) => {
+                setProductos(response.data);
+           },
+            (error) => {
+                console.error(error);
+            }
+            );
+        };
+
     fetchVendedores();
+    fetchProductos ();
+        
 },[]);
 
     return(
@@ -277,10 +292,27 @@ const Ventas = () => {
             <form className='flex flex-col'>
                 <label className='flex flex-col' htmlFor='vendedor'>
                 <span  className="text-2x1 font-gray-900">vendedor</span>
-                <select name="vendedor" className="p-2">
-                    <option>seleccione un vendedor</option>
+                <select name="vendedor" className="p-2" defaultValue={-1}>
+                    <option disabled value ={-1}>seleccione un vendedor</option>
+                    {vendedores.map((el) =>{
+                        return <option value={el._id}>{`${el.name}${el.lastname}`}</option>
+                    })}
                 </select>
                 </label>
+                <label className='flex flex-col' htmlFor='producto'>
+                <span  className="text-2x1 font-gray-900">producto</span>
+                <select name="producto" className="p-2" defaultValue={-1}>
+                    <option disabled value ={-1}>seleccione un producto</option>
+                    {productos.map((el) =>{
+                        return <option value={el._id}>{`${el.valorUnitario}${el.estado}`}</option>
+                    })}
+                </select>
+                </label>
+                <label className='flex flex-col'>
+                <span  className="text-2x1 font-gray-900">valor Total Venta</span>
+                <input className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2' type="number" name="valor" />
+                </label>
+                <button type="submit" className='col-span-2 bg-indigo-700 p-2 rounded-full shadow-md text-white'>crear venta</button>
             </form>
         </div>
     );
