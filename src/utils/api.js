@@ -27,10 +27,10 @@ export const editarProducto = async (id, data, successCallback,errorCallback)=> 
 
 
 export const eliminarProducto = async (id,successCallback,errorCallback)=> {
-    const options={
+    const options = {
         
         method: 'DELETE',
-        url: `http://localhost:5000/productos/${id}/`,
+        url: `http://localhost:5000/productos/${id}`,
         headers: { 'Content-Type': 'application/json' },        
     }
     await axios.request(options).then(successCallback).catch(errorCallback)
