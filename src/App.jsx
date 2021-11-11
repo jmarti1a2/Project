@@ -21,7 +21,8 @@ function App() {
     <Auth0Provider 
       domain="aplicacion-des-arrolladores.us.auth0.com"
       clientId="dnxGxlXuVhvNSC8hzfH3yMF8QmK17zjc"
-      redirectUri={window.location.origin}
+      redirectUri='http://localhost:3000/admin'
+      audience='api-autenticacion-aplicacion-des-arrolladores'
     >
       <Router>
         <Switch>
