@@ -12,17 +12,5 @@ const PrivateRoute = ({ roleList, children }) => {
 };
 
 
-    
-   /*  return isAuthenticated ? (
-    <>{children}</>
-    ) : ( 
-        <div>
-            <div className='text-9xl text-red-500'>No estas autorizado para ver este sitio</div> 
-            <Link to ='/'>
-            <span className='text-indigo-500 font-bold'>Llevame al home</span>          
-            </Link>               
-        </div>
-    )       
-} */
 
 export default PrivateRoute;

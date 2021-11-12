@@ -24,7 +24,9 @@ const Sidebar = () =>{
                     <PrivateComponent roleList={['admin']}>
                     <Ruta icono='fas fa-shopping-basket' ruta='/admin/productos' nombre='Productos' />
                     </PrivateComponent>
+                    <PrivateComponent roleList={['admin','vendedor']}>
                     <Ruta icono='fas fa-search-dollar' ruta='/admin/ventas' nombre='Ventas' />
+                    </PrivateComponent>
                     <PrivateComponent roleList={['admin']}>
                     <Ruta icono='fas fa-users' ruta='/admin/usuarios' nombre='Usuarios' />
                     </PrivateComponent>

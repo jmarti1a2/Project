@@ -48,7 +48,9 @@ function App() {
                   </PrivateRoute>
                 </Route>
                 <Route path='/admin/ventas'>
+                <PrivateRoute roleList={['admin','vendedor']}>
                   <Ventas />
+                  </PrivateRoute>
                 </Route>
                 <Route path='/admin'>
                   <Admin />
