@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useAuth0 } from "@auth0/auth0-react";
 import ReactLoading from 'react-loading'
 import { Link } from 'react-router-dom';
+import { obtenerDatosUsuario } from 'utils/api';
 
 const PrivateRoute = ({children}) => {
     const {isAuthenticated, isLoading, loginWithRedirect, getAccessTokenSilently  } = useAuth0();
@@ -16,7 +17,13 @@ const PrivateRoute = ({children}) => {
         const accessToken = await getAccessTokenSilently({
         audience: `api-autenticacion-aplicacion-des-arrolladores`,
     })
-    localStorage.setItem('token', accessToken)    
+    localStorage.setItem('token', accessToken)
+    console.log(accessToken)
+    await obtenerDatosUsuario((response)=>{
+        console.log('response',response)
+    },(err)=>{
+        console.log('err',err)
+    })    
     }
     if (isAuthenticated){
         fetchAuth0Token()
