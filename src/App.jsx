@@ -14,6 +14,7 @@ import 'styles/styles.css'
 import { Auth0Provider } from "@auth0/auth0-react";
 import { UserContext } from 'context/userContext';
 import { useState } from 'react/cjs/react.development';
+import PrivateRoute from 'components/PrivateRoute';
 
 function App() {
   const [userData, setUserData]= useState({})
@@ -37,10 +38,14 @@ function App() {
                   <Clientes />
                 </Route>
                 <Route path='/admin/productos'>
-                  <Productos />
+                  <PrivateRoute roleList={['admin']}>
+                    <Productos />
+                  </PrivateRoute>
                 </Route>
                 <Route path='/admin/usuarios'>
+                <PrivateRoute roleList={['admin']}>
                   <Usuarios />
+                  </PrivateRoute>
                 </Route>
                 <Route path='/admin/ventas'>
                   <Ventas />
