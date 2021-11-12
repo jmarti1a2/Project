@@ -12,8 +12,11 @@ import Registro from 'pages/Registro';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import 'styles/styles.css'
 import { Auth0Provider } from "@auth0/auth0-react";
+import { UserContext } from 'context/userContext';
+import { useState } from 'react/cjs/react.development';
 
 function App() {
+  const [userData, setUserData]= useState({})
 
 
   return (
@@ -24,6 +27,7 @@ function App() {
       redirectUri='http://localhost:3000/admin'
       audience='api-autenticacion-aplicacion-des-arrolladores'
     >
+      <UserContext.Provider value={{userData, setUserData}}>
       <Router>
         <Switch>
           <Route path={['/admin', '/admin/clientes', '/admin/productos', '/admin/usuarios', '/admin/ventas']}>
@@ -70,6 +74,7 @@ function App() {
           </Route>
         </Switch>
       </Router>
+      </UserContext.Provider>
     </Auth0Provider>
   )
 }

@@ -1,3 +1,4 @@
+import PrivateComponent from 'components/PrivateComponent'
 import { nanoid } from 'nanoid'
 import React, { useState, useEffect} from 'react'
 import { editarUsuario } from 'utils/api'
@@ -19,7 +20,13 @@ const Usuarios = () => {
         fetchUsuarios()
     }, [])
 
-    return <div>admin usuarios
+    return (
+    <div>
+       <div>admin usuarios</div>
+       <PrivateComponent roleList={['admin','vendedor']}>
+
+            <button className='bg-red-400'>HOla RBAC</button>
+       </PrivateComponent>
 
     <table className='tabla'>
         <tbody>
@@ -39,7 +46,7 @@ const Usuarios = () => {
 
     </div>
     
-}
+    )}
 
 const RolesUsuario =({user})=>{
     const [rol, setRol]= useState(user.rol)
