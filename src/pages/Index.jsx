@@ -33,7 +33,7 @@ function Index() {
 
             <div className="bg-white w-3/5 flex flex-col justify-center text-center">
                 <div>
-                    <img src={imagenFondo2} alt='imagen' className='rounded-full p-15' />
+                    <img src={imagenFondo2} alt='imagen' className='rounded-full p-10 ' />
                 </div>
             </div>
         </div>
