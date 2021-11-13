@@ -37,8 +37,7 @@ const PrivateLayout = ({children }) => {
         console.log('err',err)
         setLoadingUserInformation(false)
         logout({ returnTo:'http://localhost:3000/'})
-    }
-    )    
+    })    
     }
     if (isAuthenticated){
         fetchAuth0Token()
