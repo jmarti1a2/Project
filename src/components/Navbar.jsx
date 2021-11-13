@@ -4,7 +4,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 const Navbar = () => {
     const { loginWithRedirect } = useAuth0();
-    return <nav className='bg-purple-300'>
+    return <nav className='bg-purple-200'>
         <ul className='flex w-full my-3'>
             <li className= "w-4/5" >
             <img src={Logo} alt='imagen' className='Logo h-8 mx-4' />
