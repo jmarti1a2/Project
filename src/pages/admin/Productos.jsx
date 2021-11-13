@@ -3,8 +3,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import { nanoid } from 'nanoid';
 import { Dialog, Tooltip } from '@material-ui/core';
 import { obtenerProductos, crearProducto, editarProducto, eliminarProducto } from 'utils/api';
+import ReactLoading from 'react-loading';
 import 'react-toastify/dist/ReactToastify.css'
-//import ReactLoading from 'react-loading';
 
 const Productos = () => {
     const [mostrarTabla,setMostrarTabla ] = useState(true);
@@ -12,21 +12,28 @@ const Productos = () => {
     const [textoBoton,setTextoBoton] = useState('Crear nuevo Producto');
     const [colorBoton, setColorBoton]= useState('indigo')
     const [ejecutarConsulta, setEjecutarConsulta]=useState(true)
-    //const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     useEffect(()=>{
-        console.log('consulta', ejecutarConsulta)
-        if (ejecutarConsulta) {
-            obtenerProductos(
+        const fetchProductos = async ()=>{
+            setLoading(true)
+            await obtenerProductos(
                 (response) => {
+                    console.log('la respuesta que se recibio fue', response)
                     setProductos(response.data);
+                    setEjecutarConsulta(false)  
+                    setLoading(false)                 
                 },
                 (error)=> {
-                    console.error(error)
+                    console.error('salio un error', error)
+                    setLoading(false)
                 }
             )      
-            setEjecutarConsulta(false)
         }
+        console.log('consulta', ejecutarConsulta)
+        if (ejecutarConsulta) {
+        fetchProductos()
+    }
     },[ejecutarConsulta])
 
     
@@ -72,7 +79,7 @@ const Productos = () => {
             </div>
             
             {mostrarTabla ? (
-            <TablaProductos listaProductos={productos} setEjecutarConsulta={setEjecutarConsulta} /> 
+            <TablaProductos loading= {loading} listaProductos={productos} setEjecutarConsulta={setEjecutarConsulta} /> 
             ): (
             <FormularioCreacionProductos 
             setMostrarTabla={setMostrarTabla}
@@ -84,7 +91,7 @@ const Productos = () => {
     )
 }
 
-const TablaProductos = ({listaProductos, setEjecutarConsulta})=>{
+const TablaProductos = ({loading, listaProductos, setEjecutarConsulta})=>{
     useEffect(()=>{
         console.log('este es el listado de productos en el componente tabla', listaProductos)
     },[listaProductos])
@@ -92,7 +99,9 @@ const TablaProductos = ({listaProductos, setEjecutarConsulta})=>{
     return (
         <div className='flex flex-col items-center justify-center w-full'>
             <h2 className='text-2xl font font-extrabold text-gray-800'>Todos los Productos</h2>
-            
+            {loading? (
+            <ReactLoading type='cylon' color='#ffffff' height={667} width={375}/>
+            ):(
             <table className='tabla'>
             <thead>
                 <tr>    
@@ -102,6 +111,7 @@ const TablaProductos = ({listaProductos, setEjecutarConsulta})=>{
                 <th>Estado</th>
                 <th>Acciones</th>
                 </tr>
+                   
             </thead>
             <tbody>
                 {listaProductos.map((producto)=>{
@@ -113,8 +123,8 @@ const TablaProductos = ({listaProductos, setEjecutarConsulta})=>{
                     )               
                 })}
             </tbody>
-        </table>
-       
+            </table>
+            )}
         </div>
         
     )
