@@ -1,7 +1,10 @@
 import React from 'react'
 import imagenFondo2 from 'media/imagenFondo2.jpg';
+import { useAuth0 } from "@auth0/auth0-react";
+
 
 function Index() {
+    const { loginWithRedirect } = useAuth0();
     return <div className="h-full">
         <div className='flex flex-row h-full justify-center'>
             <div className="bg-white w-2/5 flex flex-col justify-center text-center" > 
@@ -15,6 +18,15 @@ function Index() {
                     <br />  
                     Team Des-Arrolladores
                     </div>
+
+                    <div className="pd-4 m-5">
+                    <button 
+                    onClick={() => loginWithRedirect()}
+                    className='bg-indigo-500 my-2 p-2 text-2xl text-white rounded-lg shadow-md hover:bg-indigo-800 font-medium '>
+                        Iniciar Sesión
+                    </button>
+                </div>
+
                 </div>  
 
             </div>
