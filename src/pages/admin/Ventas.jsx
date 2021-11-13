@@ -5,260 +5,6 @@ import { obtenerUsuarios } from 'utils/api';
 import { obtenerProductos } from 'utils/api';
 import { nanoid } from 'nanoid';
 
-// import { ToastContainer, toast } from 'react-toastify';
-// import axios from "axios";
-// import 'react-toastify/dist/ReactToastify.css'
-
-
-// const Ventas = () => {
-//     const [mostrarTabla,setMostrarTabla ] = useState(true);
-//     const [ventas,setVentas] = useState([])
-//     const [textoBoton,setTextoBoton] = useState('Registrar una Venta');
-//     const [colorBoton, setColorBoton]= useState('indigo')
-
-//     useEffect(()=>{
-
-//         const obtenerVentas = async()=>{
-//             const options = {method: 'GET', url: 'http://localhost:5000/ventas/'};
-//         await axios
-//         .request(options)
-//         .then(function (response) {
-//             setVentas(response.data)
-//         })
-//         .catch(function (error) {
-//             console.error(error);
-//         });
-//         }
-//         //obtener lista de productos desde el backend
-//     if(mostrarTabla){
-//         obtenerVentas()
-
-//     }
-//     },[mostrarTabla])
-
-
-//     useEffect(()=> {
-//         if(mostrarTabla){
-//             setTextoBoton('Registrar una Venta');
-//             setColorBoton('gray');
-//         }
-//         else{
-//             setTextoBoton('Mostrar las Ventas registradas');
-//             setColorBoton('indigo');
-//         }
-//     },[mostrarTabla])
-//     return (
-//         <div className='flex h-full w-full flex-col items-center justify-start p-8'>
-//             <div className='flex flex-col'>
-//             <h2 className='text-3xl font-extrabold text-gray-900'>Página de administración de Ventas</h2>
-//             <button 
-//                 onClick={() => {
-//                     setMostrarTabla(!mostrarTabla)
-//                     }} 
-//                     className={`text-white bg-${colorBoton}-700 p-5 rounded-full`}
-//                 >
-//                     {textoBoton}                       
-//             </button>
-//             </div>
-            
-//             {mostrarTabla ? (
-//             <TablaVentas listaVentas={ventas} /> 
-//             ): (
-//             <FormularioCreacionVentas
-//             setMostrarTabla={setMostrarTabla}
-//             listaVentas={ventas} 
-//             setVentas={setVentas}/>
-//             )}  
-//             <ToastContainer position='bottom-center' autoClose={5000}/> 
-//         </div>
-//     )
-// }
-
-// const TablaVentas = ({listaVentas})=>{
-//     useEffect(()=>{
-//         console.log('este es el listado de ventas en el componente tabla', listaVentas)
-//     },[listaVentas])
-    
-//     return (
-//         <div className='flex flex-col items-center justify-center w-full'>
-//             <h2 className='text-2xl font font-extrabold text-gray-800'>Todas las Ventas</h2>
-//             <table className='tabla'>
-//             <thead>
-//                 <tr>    
-//                 <th>Identificador único</th>
-//                 <th>Valor Total de la Venta</th>
-//                 {/* <th>Identificador</th> */}
-//                 <th>Cantidad</th>
-//                 <th>Valor Unitario</th>
-//                 <th>Fecha de Venta</th>
-//                 <th>Documento de Identificación</th>
-//                 <th>Nombre del Cliente</th>
-//                 <th>Vendedor</th>
-//                 </tr>
-//             </thead>
-//             <tbody>
-//                 {listaVentas.map((ventas)=>{
-//                     return (
-//                         <tr>
-//                             <td>{ventas._id}</td>
-//                             <td>{ventas.valorTotal}</td>
-//                             <td>{ventas.cantidad}</td>
-//                             <td>{ventas.valorUnitario}</td>
-//                             <td>{ventas.fechaVenta}</td>
-//                             <td>{ventas.documentoIdentidad}</td>
-//                             <td>{ventas.cliente}</td>
-//                             <td>{ventas.vendedor}</td>
-//                         </tr>
-//                     )
-//                 })}
-//             </tbody>
-//         </table>
-//         </div>
-        
-//     )
-    
-// }
-// const FormularioCreacionVentas = ({setMostrarTabla,listaVentas,setVentas})=>{
-//     const form= useRef(null)
-        
-
-//     const submitForm= async (e)=>{
-//         e.preventDefault()
-//         const fd = new FormData(form.current)
-
-//         const nuevoVenta= {}    
-//         fd.forEach((value, key) => {
-//             nuevoVenta[key]=value
-//         })
-
-//         const options = {
-//             method: 'POST',
-//             url: 'http://localhost:5000/ventas/nuevo',
-//             headers: {'Content-Type': 'application/json'},
-//             data: {id: nuevoVenta.id, valorTotal: nuevoVenta.valorTotal, cantidad: nuevoVenta.cantidad, valorUnitario: nuevoVenta.valorUnitario, fechaVenta: nuevoVenta.fechaVenta,documentoIdentidad: nuevoVenta.documentoIdentidad,cliente: nuevoVenta.cliente,vendedor: nuevoVenta.vendedor}
-//           };
-
-//         await axios
-//             .request(options)
-//             .then(function (response) {
-//             console.log(response.data);
-//             toast.success('venta registrada con éxito')
-//           })
-//             .catch(function (error) {
-//                 console.error(error);
-//                 toast.error('Error registrando una venta')
-//           });
-
-
-//         setMostrarTabla(true)
-//     }
-//         //identificar el caso de exito y mostrar un toast de exito
-//         //identificar el caso de error y mostrar un toast de error
-//     return (
-//     <div className='flex flex-col items-center justify-center'>
-//         <h2 className='text-2xl font font-extrabold text-gray-800'>REGISTRAR NUEVA VENTA</h2>
-//         <form ref={form} onSubmit={submitForm} className='flex flex-col'>
-//             <label  className='flex flex-col' htmlFor='id'>
-//                 Identificador Unico
-//                 <input 
-//                 name='id'
-//                 className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2' 
-//                 type='text' 
-//                 placeholder='Id automatico'
-                
-//                 />
-//             </label>
-//             <label className='flex flex-col' htmlFor='valorTotal'>
-//                 Valor Total de la Venta
-//                 <input 
-//                 name='valorTotal'
-//                 className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2' 
-//                 type='number ' 
-//                 placeholder='valor total de la venta'
-//                 required
-//                 />
-//             </label>
-//             <label className='flex flex-col' htmlFor='cantidad'>
-//                 Cantidad
-//                 <input 
-//                 name='cantidad'
-//                 className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2' 
-//                 type='number' 
-//                 placeholder='cantidad'
-//                 required
-//                 />
-//             </label>
-//             <label className='flex flex-col' htmlFor='valorUnitario'>
-//                 Valor Unitario
-//                 <input 
-//                 name='valorUnitario'
-//                 className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2' 
-//                 type='number' 
-//                 placeholder='valor unitario'
-//                 required
-//                 />
-//             </label>
-//             <label className='flex flex-col' htmlFor='fechaVenta'>
-//                 Fecha de Venta
-//                 <input 
-//                 name='fechaVenta'
-//                 className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2' 
-//                 type='number' 
-//                 placeholder='fecha de la venta'
-//                 required
-//                 />
-//             </label>
-//             <label className='flex flex-col' htmlFor='documentoIdentidad'>
-//                 Documento de Identificación
-//                 <input 
-//                 name='documentoIdentidad'
-//                 className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2' 
-//                 type='number' 
-//                 placeholder='documento de identidad'
-//                 required
-//                 />
-//             </label>
-//             <label className='flex flex-col' htmlFor='cliente'>
-//                 Nombre del Cliente
-//                 <input 
-//                 name='cliente'
-//                 className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2' 
-//                 type='text' 
-//                 placeholder='cliente'
-//                 required
-//                 />
-//             </label>
-//             <label className='flex flex-col' htmlFor='vendedor'>
-//                 Vendedor
-//                 <input 
-//                 name='vendedor'
-//                 className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2' 
-//                 type='text' 
-//                 placeholder='vendedor'
-//                 required
-//                 />
-//             </label>
-           
-//             <button 
-//             type='submit'
-//             className='col-span-2 bg-indigo-700 p-2 rounded-full shadow-md text-white'         
-//         >                
-//             Guardar Venta
-//             </button>
-//         </form>
-//     </div>
-//     )
-// }
-// function ventas() {
-//     return (
-//         <div>
-//             Ventas
-//         </div>
-//     )
-// }
-
-// export default Ventas
-
 const Ventas = () => {
     const form= useRef(null);
     const [vendedores,setVendedores]=useState([]);
@@ -315,6 +61,8 @@ const listaProductos =Object.keys(formData)
 })
 .filter((v) => v);
 
+
+
 // console.log("lista antes de cantidad",listaProductos);
 
 // Object.keys(formData).forEach((k) => {
@@ -346,11 +94,11 @@ await crearVenta(
 };
 
     return(
-        <div className="flex h-full w-full overflow-y-scroll items-center justify-center w-full ">
-            <form ref={form} onSubmit={submitForm} className='flex flex-col'>
+        <div className='flex h-full w-full items-center justify-center'>
+            <form ref={form} onSubmit={submitForm} className='flex flex-col h-full'>
             <h1 className='text-3xl font-extrabold text-gray-900  my-4 '>Crear una nueva venta</h1>
                 <label className='flex flex-col' htmlFor='vendedor'>
-                <span  className="text-2x1 font-gray-900">vendedor</span>
+                <span  className="text-2x1 font-gray-900">Vendedor</span>
                 <select name="vendedor" className="p-2" defaultValue="" required> 
                     <option className="bg-gray-50 border-gray-600 p-2 rounded-lg m-2" disabled value ="">seleccione un vendedor</option>
                     {vendedores.map((el) =>{
@@ -366,7 +114,7 @@ setProductosTabla={setProductosTabla}
 />
 
                 <label className='flex flex-col'>              
-                <span  className="text-2x1 font-gray-900">valor Total Venta</span>
+                <span  className="text-2x1 font-gray-900">Valor Total Venta</span>
                 <input 
                 className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2' 
                 type="number" 
@@ -406,9 +154,9 @@ setProductosTabla={setProductosTabla}
         const [productoAAgregar,setProductoAAgregar]=useState({});
         const [filasTabla,setFilasTabla]=useState([]);
 
-        useEffect(() => {
+        /* useEffect(() => {
             console.log(productoAAgregar);
-        },[productoAAgregar]);
+        },[productoAAgregar]); */
     
         useEffect(() => {
             setProductosTabla(filasTabla);
@@ -440,24 +188,26 @@ setProductosTabla={setProductosTabla}
     };
 
     return (
-    <div>
-    <div className="flex ">
-    <label className='flex flex-col' htmlFor='producto'>
-    <select name="producto" className="p-2" 
-    value={productoAAgregar._id ?? ""} 
-    onChange={(e) => 
-        setProductoAAgregar(productos.filter((v) => v._id===e.target.value)[0])
-    }
-    >
-        <option className="bg-gray-50 border-gray-600 p-2 rounded-lg m-2" disabled value ="">
-            seleccione un producto</option>
-        {productos.map((el) =>{
-            return (
-            <option  
-            key={nanoid()}
-            value={el._id}
-            >{`${el.descripcion} ${el.valorUnitario} ${el.estado}`}</option>
-            );
+        <div>
+            <div className="flex ">
+                <label className='flex flex-col' htmlFor='producto'>
+                    <select
+                        className="p-2"
+                        value={productoAAgregar._id ?? ""}
+                        onChange={(e) =>
+                            setProductoAAgregar(productos.filter((v) => v._id === e.target.value)[0])
+                        }
+                    >
+                        <option className="bg-gray-50 border-gray-600 p-2 rounded-lg m-2" disabled value="">
+                            seleccione un producto
+                            </option>
+                        {productos.map((el) => {
+                            return (
+                                <option
+                                    key={nanoid()}
+                                    value={el._id}
+                                >{`${el.descripcion} ${el.valorUnitario} ${el.estado}`}</option>
+                            );
         
     })}
     </select>
@@ -468,7 +218,7 @@ type="button"
 onClick={() => agregarNuevoProducto()} 
 className="col-span-2 bg-indigo-700 p-2 rounded-full shadow-md text-white"
 >
-    agregar un producto
+    Agregar un Producto
     </button>   
 </div>
 <table className="tabla">
@@ -479,8 +229,9 @@ className="col-span-2 bg-indigo-700 p-2 rounded-full shadow-md text-white"
             <th>Valor Unitario</th>
             <th>Estado</th>
             <th>Cantidad</th>
+            <th>Total</th>
             <th>Eliminar</th>
-            <th className='hidden'>Input</th>
+            <th className='hidden'>Input</th>   
           </tr>
         </thead>
         <tbody>
@@ -513,7 +264,7 @@ const FilaProducto = ({veh,index,eliminarProducto,modificarProducto}) => {
             <td>{producto.valorUnitario}</td>
             <td>{producto.estado}</td>
             <td>
-                <label htmlFor={`valor_${index}`}>
+                <label htmlFor={`valorUnitario_${index}`}>
                     <input
                       type="number"
                       name={`cantidad_${index}`}
@@ -524,14 +275,13 @@ const FilaProducto = ({veh,index,eliminarProducto,modificarProducto}) => {
                               ...producto,
                               cantidad: e.target.value === " " ? "0" : e.target.value,
                               total:
-                                 parseFloat(producto.valor) *
-                                 parseFloat(e.target.value === " " ? "0" : e.target.value),
+                              parseFloat(producto.valorUnitario) *
+                              parseFloat(e.target.value === '' ? '0' : e.target.value),
                        });     
                     }}
                   />
                 </label>
               </td>          
-            <td>{producto.valor}</td>
             <td>{parseFloat(producto.total ?? 0)}</td>
             <td>
                 <i

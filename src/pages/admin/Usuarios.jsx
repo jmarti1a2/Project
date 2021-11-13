@@ -22,11 +22,14 @@ const Usuarios = () => {
 
     return (
     <div>
-       <div>admin usuarios</div>
+      
        <PrivateComponent roleList={['admin','vendedor']}>
 
-            <button className='bg-red-400'>HOla RBAC</button>
+            <button className='bg-red-400'></button>
        </PrivateComponent>
+       <div className='text-gray-800 text-center text-3xl'>
+           <h1>ADMINISTRACION DE USUARIOS</h1>
+        </div>
 
     <table className='tabla'>
         <thead>
