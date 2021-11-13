@@ -96,10 +96,10 @@ await crearVenta(
     return(
         <div className='flex h-full w-full items-center justify-center'>
             <form ref={form} onSubmit={submitForm} className='flex flex-col h-full'>
-            <h1 className='text-3xl font-extrabold text-gray-900  my-4 '>Crear una nueva venta</h1>
+            <h1 className='text-3xl font-extrabold text-gray-900  my-4 text-center'>Crear una nueva venta</h1>
                 <label className='flex flex-col' htmlFor='vendedor'>
-                <span  className="text-2x1 font-gray-900">Vendedor</span>
-                <select name="vendedor" className="p-2" defaultValue="" required> 
+                <span  className="text-2x1 font-gray-900 font-extrabold my-1">Vendedor</span>
+                <select name="vendedor" className="p-2 my-3" defaultValue="" required> 
                     <option className="bg-gray-50 border-gray-600 p-2 rounded-lg m-2" disabled value ="">seleccione un vendedor</option>
                     {vendedores.map((el) =>{
                         return <option  key={nanoid()}  value={el._id}> {`${el.name} ${el.lastname}`}</option>
@@ -114,7 +114,7 @@ setProductosTabla={setProductosTabla}
 />
 
                 <label className='flex flex-col'>              
-                <span  className="text-2x1 font-gray-900">Valor Total Venta</span>
+                <span  className="text-2x1 font-extrabold font-gray-900">Valor Total Venta</span>
                 <input 
                 className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2' 
                 type="number" 
@@ -124,7 +124,7 @@ setProductosTabla={setProductosTabla}
             </label>
             <button 
             type="submit" 
-            className='col-span-2 bg-indigo-700 p-2 rounded-full shadow-md text-white'
+            className='col-span-2 bg-indigo-700 p-2 rounded-full shadow-md text-white my-4'
             >
             crear venta
             </button>
