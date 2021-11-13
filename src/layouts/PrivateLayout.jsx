@@ -8,7 +8,7 @@ import { obtenerDatosUsuario } from 'utils/api';
 import { useUser } from 'context/userContext';
 
 const PrivateLayout = ({children }) => {
-    const {isAuthenticated, isLoading, loginWithRedirect, getAccessTokenSilently  } = useAuth0();
+    const {isAuthenticated, isLoading, loginWithRedirect, getAccessTokenSilently, logout  } = useAuth0();
     const [loadingUserInformation, setLoadingUserInformation]= useState(false)
     const {setUserData}= useUser()
 
@@ -36,7 +36,9 @@ const PrivateLayout = ({children }) => {
     },(err)=>{
         console.log('err',err)
         setLoadingUserInformation(false)
-    })    
+        logout({ returnTo:'http://localhost:3000/'})
+    }
+    )    
     }
     if (isAuthenticated){
         fetchAuth0Token()

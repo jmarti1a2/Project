@@ -29,12 +29,23 @@ const Usuarios = () => {
        </PrivateComponent>
 
     <table className='tabla'>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Estado</th>
+                <th>Rol</th>
+            </tr>
+        </thead>
         <tbody>
             {usuarios.map(user=>{
                 return(
                     <tr key={nanoid()}>
                     <td>{user.name}</td>
                     <td>{user.email}</td>
+                    <td>
+                        <EstadoUsuario user={user}/>
+                    </td>
                     <td>
                         <RolesUsuario user={user}/>
                     </td>
@@ -50,6 +61,7 @@ const Usuarios = () => {
 
 const RolesUsuario =({user})=>{
     const [rol, setRol]= useState(user.rol)
+
     useEffect(() => {
         const editUsuario =async ()=>{
             await editarUsuario(user._id,{ rol },(res)=>{console.log(res)},(err)=>{console.error(err)})
@@ -60,12 +72,36 @@ const RolesUsuario =({user})=>{
     }, [rol, user])
     return(
         <select value= {rol} onChange={e=>setRol(e.target.value)}>
+            <option value="" disabled>Seleccione un Rol</option>
             <option value="admin">Admin</option>
             <option value="vendedor">Vendedor</option>
-            <option value="inactivo">Inactivo</option>
+            <option value="sin rol">Sin Rol</option>
         </select>
 
     )
+}
+
+const EstadoUsuario =({user})=>{
+    const [estado, setEstado]= useState(user.estado ?? '')
+    
+    useEffect(() => {
+        const editUsuario =async ()=>{
+            await editarUsuario(user._id,{ estado },(res)=>{console.log(res)},(err)=>{console.error(err)})
+        }
+        if(user.estado !== estado){
+            editUsuario()         
+        }
+    }, [estado, user])
+    return (<select value={estado} onChange={(e)=>setEstado(e.target.value)} >
+             <option value='' disabled>
+                seleccione un Estado
+            </option>
+            <option value="autorizado" >Autorizado</option>
+            <option value="pendiente" >Pendiente</option>
+            <option value="rechazado" >Rechazado</option>
+            </select>
+    )
+
 }
 
 export default Usuarios
