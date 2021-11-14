@@ -13,8 +13,8 @@ const Admin = () =>{
 
      return (
                    
-              <div className="w-full h-full items-center content-center">
-                    <h1 className="text-3xl font-extrabold text-gray-900 mb-8 mt-8 text-center p-2">
+              <div className="w-full h-screen items-center content-center">
+                    <h1 className="text-3xl font-extrabold text-gray-900 mb-4 mt-4 text-center p-2">
                         ¡Hola!
                     </h1>
 
@@ -26,8 +26,8 @@ const Admin = () =>{
                         </p>
                     </div>
 
-                    <section className="w-full h-full">
-                        <ul className="flex flex-wrap list-none justify-between">
+                    <section className="w-full h-auto ">
+                        <ul className="flex flex-wrap list-none justify-between h-auto">
                             <li className="m-10 rounded-r-lg flex flex-col justify-center items-center"> 
                                 <h2 className="text-xl font-extrabold text-gray-900 mb-2 mt-2 text-center" > Módulo de Producto</h2>
                                 <div className="bg-indigo-800 w-60 h-72 flex ">  
