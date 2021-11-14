@@ -5,6 +5,7 @@ import { Dialog, Tooltip } from '@material-ui/core';
 import { obtenerProductos, crearProducto, editarProducto, eliminarProducto } from 'utils/api';
 import ReactLoading from 'react-loading';
 import 'react-toastify/dist/ReactToastify.css'
+import PrivateComponent from 'components/PrivateComponent';
 
 const Productos = () => {
     const [mostrarTabla,setMostrarTabla ] = useState(true);
@@ -46,13 +47,6 @@ const Productos = () => {
     },[mostrarTabla])
 
 
-    useEffect(()=>{    
-        //obtener lista de productos desde el backend
-    if(mostrarTabla){  
-        setEjecutarConsulta(true)    
-    }
-    },[mostrarTabla])
-
     useEffect(()=> {
         if(mostrarTabla){
             setTextoBoton('Crear nuevo Producto');
@@ -92,13 +86,28 @@ const Productos = () => {
 }
 
 const TablaProductos = ({loading, listaProductos, setEjecutarConsulta})=>{
-    useEffect(()=>{
-        console.log('este es el listado de productos en el componente tabla', listaProductos)
-    },[listaProductos])
-    
+    const [busqueda, setBusqueda] = useState('');
+    const [productosFiltrados, setProductosFiltrados] = useState(listaProductos);
+
+    useEffect(() => {
+        setProductosFiltrados(
+          listaProductos.filter((elemento) => {
+            return JSON.stringify(elemento).toLowerCase().includes(busqueda.toLowerCase());
+          })
+        );
+      }, [busqueda, listaProductos]);
+
+
     return (
         <div className='flex flex-col items-center justify-center w-full'>
+            <input 
+            value={busqueda}
+            onChange={(e)=>setBusqueda(e.target.value)}
+            placeholder='buscar productos' 
+            className='border-blue-900 px-3 py-1 self-end rounded-md' />
+
             <h2 className='text-2xl font font-extrabold text-gray-800'>Todos los Productos</h2>
+            <div className='hidden md:flex w-full'>         
             {loading? (
             <ReactLoading type='cylon' color='#ffffff' height={667} width={375}/>
             ):(
@@ -114,7 +123,7 @@ const TablaProductos = ({loading, listaProductos, setEjecutarConsulta})=>{
                    
             </thead>
             <tbody>
-                {listaProductos.map((producto)=>{
+                {productosFiltrados.map((producto)=>{
                     return (
                         <FilaProducto  
                         key={nanoid()} 
@@ -126,7 +135,19 @@ const TablaProductos = ({loading, listaProductos, setEjecutarConsulta})=>{
             </table>
             )}
         </div>
-        
+        <div className='flex flex-col w-full m-2 md:hidden'>
+        {productosFiltrados.map((el) => {
+          return (
+            <div className='bg-gray-400 m-2 shadow-xl flex flex-col p-2 rounded-xl'>
+              <span>{el.descripcion}</span>
+              <span>{el.valorunitario}</span>
+              <span>{el.estado}</span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+    
     )
     
 }
@@ -187,7 +208,7 @@ const FilaProducto = ({producto, setEjecutarConsulta})=> {
                     <td><input className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2' 
                     type="text" 
                     value={infoNuevoProducto.descripcion}
-                    onChange={e=>
+                    onChange={(e)=>
                         setInfoNuevoProducto({...infoNuevoProducto, descripcion: e.target.value})}
 
                     />
@@ -196,7 +217,7 @@ const FilaProducto = ({producto, setEjecutarConsulta})=> {
                     <td><input className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2' 
                     type="text" 
                     value={infoNuevoProducto.valorUnitario}
-                    onChange={e=>
+                    onChange={(e)=>
                         setInfoNuevoProducto({...infoNuevoProducto, valorUnitario: e.target.value})}
                     />
                     </td>
@@ -205,7 +226,7 @@ const FilaProducto = ({producto, setEjecutarConsulta})=> {
                     className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2' 
                     type="text" 
                     value={infoNuevoProducto.estado}
-                    onChange={e=>
+                    onChange={(e)=>
                         setInfoNuevoProducto({...infoNuevoProducto, estado: e.target.value})
                     }
                     />
@@ -313,13 +334,11 @@ const FormularioCreacionProductos = ({setMostrarTabla,listaProductos,setProducto
        (error)=>{
             console.error(error)
             toast.error('Error creando un producto')
-       }
-       )
-
-        setMostrarTabla(true)
+       } )
+    setMostrarTabla(true)
     }
-        //identificar el caso de exito y mostrar un toast de exito
-        //identificar el caso de error y mostrar un toast de error
+
+    
     return (
         <div className='flex flex-col items-center justify-center'>
             <h2 className='text-2xl font font-extrabold text-gray-800'>CREAR NUEVO PRODUCTO</h2>

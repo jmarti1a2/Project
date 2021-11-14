@@ -63,24 +63,12 @@ const listaProductos =Object.keys(formData)
 
 
 
-// console.log("lista antes de cantidad",listaProductos);
-
-// Object.keys(formData).forEach((k) => {
-//     if (k.includes("cantidad")){
-//         const indice=parseInt(k.split("_")[1]);
-//         listaProductos[indice]["cantidad"]=formData[k];
-//     }
-    
-// });
-
-// console.log("lista despues de cantidad",listaProductos);
-
 const datosVenta={
     vendedor:vendedores.filter((v)=> v._id === formData.vendedor)[0],
     cantidad:formData.valor,
     productos:listaProductos,
 };
-// console.log("lista productos",listaProductos);
+
 
 await crearVenta(
     datosVenta,
@@ -133,30 +121,13 @@ setProductosTabla={setProductosTabla}
    );
 };
 
-    // const DropDownProductos=({productos,nombre}) => {
-    //     return (
-    //         <label className='flex flex-col' htmlFor='producto'>
-    //         <span  className="text-2x1 font-gray-900">producto</span>
-    //         <select name={nombre} className="p-2" defaultValue={-1}>
-    //             <option disabled value ={-1}>seleccione un producto</option>
-    //             {productos.map((el) =>{
-    //                 return <option  key={nanoid()}  value={el._id}>{`${el.valorUnitario}${el.estado}`}</option>
-    //             })}
-    //         </select>
-    //         </label>
 
-    //     );
-       
-    // };
 
 
     const TablaProductos = ({productos,setProductos,setProductosTabla }) => {
         const [productoAAgregar,setProductoAAgregar]=useState({});
         const [filasTabla,setFilasTabla]=useState([]);
-
-        /* useEffect(() => {
-            console.log(productoAAgregar);
-        },[productoAAgregar]); */
+        const [totalVentas,setTotalVentas]= useState(0)
     
         useEffect(() => {
             setProductosTabla(filasTabla);
@@ -178,7 +149,7 @@ setProductosTabla={setProductosTabla}
     const modificarProducto = (producto,cantidad) => {
         setFilasTabla(
             filasTabla.map((ft) => {
-                if (ft._id === producto.id){
+                if (ft._id === producto._id){
                     ft.cantidad =cantidad ;
                     ft.total = producto.valor * cantidad;
                 }
@@ -186,6 +157,14 @@ setProductosTabla={setProductosTabla}
             })
         );
     };
+
+    useEffect(() => {
+        let total =0
+        filasTabla.forEach((p)=>{
+            total = total + p.total
+        })
+        setTotalVentas(total)
+    }, [filasTabla])
 
     return (
         <div>
@@ -248,6 +227,7 @@ className="col-span-2 bg-indigo-700 p-2 rounded-full shadow-md text-white"
           })}
         </tbody>
       </table>
+      <span>Total de la venta: {totalVentas}</span>
     </div>
   );
 };
