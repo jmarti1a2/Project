@@ -46,7 +46,7 @@ const Sidebar = () =>{
                 <button
                 className={`p-1 my-3 bg-${
                     isActive?'gray':'indigo'
-                    }-700 hover:bg-indigo-900 flex w-full items-center text-white rounded-md`} 
+                    }-700 hover:bg-indigo-900 flex w-full items-center text-white rounded-md transform hover:scale-105 motion-reduce:transform-none`} 
                     >
                     {usuario? (
                     <>
