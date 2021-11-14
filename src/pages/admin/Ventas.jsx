@@ -112,7 +112,7 @@ setProductosTabla={setProductosTabla}
             </label>
             <button 
             type="submit" 
-            className='col-span-2 text-xl bg-indigo-700 p-2 rounded-full shadow-md text-white my-4 hover:bg-indigo-800 active:bg-green-700'
+            className='col-span-2 text-xl bg-indigo-700 p-2 rounded-full shadow-md text-white my-4 hover:bg-indigo-800 active:bg-green-700 transform hover:scale-110 motion-reduce:transform-none'
             >
             Crear Venta
             </button>
@@ -195,7 +195,7 @@ setProductosTabla={setProductosTabla}
 <button
 type="button"
 onClick={() => agregarNuevoProducto()} 
-className=" active:bg-green-700 col-span-2 bg-indigo-700 mb-2 p-2 rounded-full shadow-md text-white mx-3 hover:bg-indigo-800 "
+className=" active:bg-green-700 col-span-2 bg-indigo-700 mb-2 p-2 rounded-full shadow-md text-white mx-3 hover:bg-indigo-800 transform hover:scale-105 motion-reduce:transform-none"
 >
     Agregar un Producto
     </button>   

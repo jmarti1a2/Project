@@ -66,7 +66,7 @@ const Productos = () => {
                 onClick={() => {
                     setMostrarTabla(!mostrarTabla)
                     }} 
-                    className={`text-white font-semibold bg-${colorBoton}-700 p-5 rounded-full hover:bg-${colorBoton}-900 mb-4`}
+                    className={`text-white font-semibold bg-${colorBoton}-700 p-5 rounded-full hover:bg-${colorBoton}-900 mb-4 transform hover:scale-110 motion-reduce:transform-none`}
                 >
                     {textoBoton}                       
             </button>
@@ -286,7 +286,7 @@ const FilaProducto = ({producto, setEjecutarConsulta})=> {
                         <div className='flex w-full items-center justify-center my-4'>
                         <button 
                         onClick={()=> deleteProducto()}
-                        className='mx-2 px-4 py-2 bg-green-500 text-white hover:bg-green-700'
+                        className='mx-2 px-4 py-2 bg-green-500 text-white hover:bg-green-700 '
                         >
                             Si
                         </button>
@@ -382,7 +382,7 @@ const FormularioCreacionProductos = ({setMostrarTabla,listaProductos,setProducto
                 </label>
                 <button
                     type='submit'
-                    className='col-span-2 bg-indigo-700 p-2 rounded-full shadow-md text-white mt-5 hover:bg-indigo-800'
+                    className='col-span-2 bg-indigo-700 p-2 rounded-full shadow-md text-white mt-5 hover:bg-indigo-800 transform hover:scale-110 motion-reduce:transform-none'
                 >
                     Guardar Producto
                 </button>
