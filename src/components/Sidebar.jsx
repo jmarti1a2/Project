@@ -31,7 +31,7 @@ const Sidebar = () =>{
                     <Ruta icono='fas fa-users' ruta='/admin/usuarios' nombre='Usuarios' />
                     </PrivateComponent>
                 </div>
-                <button
+                <button className={`p-1 my-3 bg-gray-400 hover:bg-red-600 w-full items-center text-white text-center rounded-md transform hover:scale-110 motion-reduce:transform-none`}
                 onClick={() => cerrarSesion()}>              
                 Cerrar Sesión
                 </button>              
