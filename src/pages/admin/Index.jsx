@@ -8,65 +8,78 @@ import fondo_ventas from 'media/fondo_ventas.jpg'
 import fondo_usuarios from 'media/fondo_usuarios.jpg'
 
 
-
-
-
 const Admin = () =>{
     const { user, logout } = useAuth0();
 
      return (
-                    
-                <div className=" w-full h-full flex flex-col items-center ">
-                    <h1 className="text-3xl font-extrabold text-gray-900 mb-8 mt-4 text-center">
-                        Bienvenidos
+                   
+              <div className="w-full h-full items-center content-center">
+                    <h1 className="text-3xl font-extrabold text-gray-900 mb-8 mt-8 text-center p-2">
+                        ¡Hola!
                     </h1>
-                    <div className='w-full h-full flex flex-row justify-between p-3 my-4 mx-2 items-center'>
-                        <div className='mx-2 flex-row justify-between text-center'>
-                            <h2>Ingrese al modulo de Producto</h2>
-                            <img className='mx-auto h-40 w-auto' src={fondo_productos} alt='workflow'/>
-                            <PrivateComponent roleList={['admin']}>
-                            <Ruta icono='fas fa-shopping-basket' ruta='/admin/productos' nombre='Productos' />
-                            </PrivateComponent>
-                        </div>
-                        <div className='mx-2 flex-row justify-items-center text-center'>
-                        <h2>Ingrese al modulo de Ventas</h2>
-                        <img className='mx-auto h-40 w-auto' src={fondo_ventas} alt='workflow'/>
-                            <PrivateComponent roleList={['admin','vendedor']}>
-                            <Ruta icono='fas fa-search-dollar' ruta='/admin/ventas' nombre='Ventas' />
-                            </PrivateComponent>
-                        </div>
-                        <div className='mx-2 flex-row justify-items-center text-center'>
-                        <h2>Ingrese al modulo de Usuarios</h2>
-                        <img className='mx-auto h-40 w-auto' src={fondo_usuarios} alt='workflow'/>
-                            <PrivateComponent roleList={['admin']}>
-                            <Ruta icono='fas fa-users' ruta='/admin/usuarios' nombre='Usuarios' />
-                            </PrivateComponent>
-                        </div>
-                    </div>          
 
+                    <div className="text-center my-2 p-2">
+                        <p className="text-l font-semibold italic">
+                            Bienvenidos a la aplicación para la gestión de ventas de su organización. 
+                            <br />
+                            Por favor seleccione uno de los items para ingresar al módulo deseado
+                        </p>
+                    </div>
+
+                    <section className="w-full h-full">
+                        <ul className="flex flex-wrap list-none justify-between">
+                            <li className="m-10 rounded-r-lg flex flex-col justify-center items-center"> 
+                                <h2 className="text-xl font-extrabold text-gray-900 mb-2 mt-2 text-center" > Módulo de Producto</h2>
+                                <div className="bg-indigo-800 w-60 h-72 flex ">  
+                                    <img className='object-cover rounded-xl' src={fondo_productos} alt='workflow'/>
+                                </div>
+                                    <PrivateComponent roleList={['admin']}>
+                                        <Ruta ruta='/admin/productos' nombre='Productos' />
+                                    </PrivateComponent> 
+                                    
+                            </li>
+
+                            <li className="m-10 rounded-r-lg flex flex-col justify-center items-center"> 
+                                <h2 className="text-xl font-extrabold text-gray-900 mb-2 mt-4 text-center"> Módulo de Ventas</h2>
+                                <div className="w-60 h-72 flex ">  
+                                    <img className='object-cover rounded-xl' src={fondo_ventas} alt='workflow'/>
+                                </div>
+                                    <PrivateComponent roleList={['admin','vendedor']}>
+                                            <Ruta ruta='/admin/ventas' nombre='Ventas' />
+                                    </PrivateComponent>
+                            </li>
+
+                            <li className="m-10 rounded-r-lg flex flex-col justify-center items-center"> 
+                                <h2 className="text-xl font-extrabold text-gray-900 mb-2 mt-4 text-center"> Módulo de Usuarios</h2>
+                                <div className="w-60 h-72 flex ">    
+                                    <img className='object-cover rounded-xl' src={fondo_usuarios} alt='workflow'/>
+                                </div>
+                                    <PrivateComponent roleList={['admin']}>
+                                        <Ruta ruta='/admin/usuarios' nombre='Usuarios' />
+                                    </PrivateComponent>
+                            </li>
+
+                        </ul>
+                      </section>          
                 </div>
                 
             
     )
 }
 
-    const Ruta=({icono,ruta,nombre, usuario})=> {
+    const Ruta=({ruta,nombre, usuario})=> {
         const isActive = useActiveRoute(ruta)
 
         return (
             <Link to={ruta}> 
                 <button
-                className={`font-semibold p-5 my-3 bg-${
-                    isActive?'gray':'indigo'
-                    }-700 hover:bg-indigo-900 flex justify-items-center items-center text-white rounded-xl text-center `} 
+                className={"w-full font-semibold p-5 my-3 bg-gray-700  flex items-center justify-items-center  text-white rounded-xl text-center hover:bg-gray-900 transform hover:scale-110 motion-reduce:transform-none"} 
                     >
                     {usuario? (
                     <>
-                    
                     {usuario.name}</> 
                     ):(                  
                      <>
-                     <i className={`${icono} w-10`} />
                      {nombre}                   
                      </>
                     )}               
