@@ -19,42 +19,45 @@ const Admin = () =>{
                     </h1>
 
                     <div className="text-center my-2 p-2">
+                    <PrivateComponent roleList={['admin','vendedor']}>
                         <p className="text-l font-semibold italic">
-                            Bienvenidos a la aplicación para la gestión de ventas de su organización. 
+                            Bienvenido a la aplicación para la gestión de ventas de su organización. 
                             <br />
                             Por favor seleccione uno de los items para ingresar al módulo deseado
                         </p>
+                        </PrivateComponent> 
                     </div>
 
                     <section className="w-full h-auto ">
                         <ul className="flex flex-wrap list-none justify-between h-auto">
+
                             <li className="m-10 rounded-r-lg flex flex-col justify-center items-center"> 
+                             <PrivateComponent roleList={['admin']}>
                                 <h2 className="text-xl font-extrabold text-gray-900 mb-2 mt-2 text-center" > Módulo de Producto</h2>
                                 <div className="bg-indigo-800 w-60 h-72 flex ">  
                                     <img className='object-cover rounded-xl' src={fondo_productos} alt='workflow'/>
                                 </div>
-                                    <PrivateComponent roleList={['admin']}>
                                         <Ruta ruta='/admin/productos' nombre='Productos' />
                                     </PrivateComponent> 
-                                    
                             </li>
+                                                              
 
                             <li className="m-10 rounded-r-lg flex flex-col justify-center items-center"> 
+                                    <PrivateComponent roleList={['admin','vendedor']}>
                                 <h2 className="text-xl font-extrabold text-gray-900 mb-2 mt-4 text-center"> Módulo de Ventas</h2>
                                 <div className="w-60 h-72 flex ">  
                                     <img className='object-cover rounded-xl' src={fondo_ventas} alt='workflow'/>
                                 </div>
-                                    <PrivateComponent roleList={['admin','vendedor']}>
                                             <Ruta ruta='/admin/ventas' nombre='Ventas' />
                                     </PrivateComponent>
                             </li>
 
                             <li className="m-10 rounded-r-lg flex flex-col justify-center items-center"> 
+                                    <PrivateComponent roleList={['admin']}>
                                 <h2 className="text-xl font-extrabold text-gray-900 mb-2 mt-4 text-center"> Módulo de Usuarios</h2>
                                 <div className="w-60 h-72 flex ">    
                                     <img className='object-cover rounded-xl' src={fondo_usuarios} alt='workflow'/>
                                 </div>
-                                    <PrivateComponent roleList={['admin']}>
                                         <Ruta ruta='/admin/usuarios' nombre='Usuarios' />
                                     </PrivateComponent>
                             </li>
