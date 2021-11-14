@@ -33,7 +33,7 @@ const Admin = () =>{
 
                             <li className="m-10 rounded-r-lg flex flex-col justify-center items-center"> 
                              <PrivateComponent roleList={['admin']}>
-                                <h2 className="text-xl font-extrabold text-gray-900 mb-2 mt-2 text-center" > Módulo de Producto</h2>
+                                <h2 className="text-xl font-extrabold text-gray-900 mb-2 text-center" > Módulo de Producto</h2>
                                 <div className="bg-indigo-800 w-60 h-72 flex ">  
                                     <img className='object-cover rounded-xl' src={fondo_productos} alt='workflow'/>
                                 </div>
@@ -44,7 +44,7 @@ const Admin = () =>{
 
                             <li className="m-10 rounded-r-lg flex flex-col justify-center items-center"> 
                                     <PrivateComponent roleList={['admin','vendedor']}>
-                                <h2 className="text-xl font-extrabold text-gray-900 mb-2 mt-4 text-center"> Módulo de Ventas</h2>
+                                <h2 className="text-xl font-extrabold text-gray-900 mb-2 text-center"> Módulo de Ventas</h2>
                                 <div className="w-60 h-72 flex ">  
                                     <img className='object-cover rounded-xl' src={fondo_ventas} alt='workflow'/>
                                 </div>
@@ -54,7 +54,7 @@ const Admin = () =>{
 
                             <li className="m-10 rounded-r-lg flex flex-col justify-center items-center"> 
                                     <PrivateComponent roleList={['admin']}>
-                                <h2 className="text-xl font-extrabold text-gray-900 mb-2 mt-4 text-center"> Módulo de Usuarios</h2>
+                                <h2 className="text-xl font-extrabold text-gray-900 mb-2 text-center"> Módulo de Usuarios</h2>
                                 <div className="w-60 h-72 flex ">    
                                     <img className='object-cover rounded-xl' src={fondo_usuarios} alt='workflow'/>
                                 </div>
