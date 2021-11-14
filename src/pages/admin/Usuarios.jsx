@@ -21,7 +21,7 @@ const Usuarios = () => {
     }, [])
 
     return (
-    <div>
+    <div className="">
       
        <PrivateComponent roleList={['admin','vendedor']}>
 
