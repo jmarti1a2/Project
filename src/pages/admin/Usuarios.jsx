@@ -27,8 +27,8 @@ const Usuarios = () => {
 
             <button className='bg-red-400'></button>
        </PrivateComponent>
-       <div className='text-gray-800 text-center text-3xl'>
-           <h1>ADMINISTRACION DE USUARIOS</h1>
+       <div className='text-gray-800 h-full text-3xl'>
+           <h1 className='text-3xl font-extrabold text-gray-900  my-8 text-center'>Gestion de Usuarios</h1>
         </div>
 
     <table className='tabla'>

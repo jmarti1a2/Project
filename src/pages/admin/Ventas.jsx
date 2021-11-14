@@ -82,13 +82,13 @@ await crearVenta(
 };
 
     return(
-        <div className='flex h-full w-full items-center justify-center'>
+        <div className='flex h-full w-full  justify-center items-center mt-7 '>
             <form ref={form} onSubmit={submitForm} className='flex flex-col h-full'>
-            <h1 className='text-3xl font-extrabold text-gray-900  my-4 '>Crear una nueva venta</h1>
-                <label className='flex flex-col' htmlFor='vendedor'>
-                <span  className="text-2x1 font-gray-900">Vendedor</span>
-                <select name="vendedor" className="p-2" defaultValue="" required> 
-                    <option className="bg-gray-50 border-gray-600 p-2 rounded-lg m-2" disabled value ="">seleccione un vendedor</option>
+            <h1 className='text-3xl font-extrabold text-gray-900  my-5 text-center'>Crear una nueva venta</h1>
+                <label className='flex flex-col my-2' htmlFor='vendedor'>
+                <span  className="text-2x1 font-gray-900 font-extrabold my-1">Vendedor</span>
+                <select name="vendedor" className="p-2 mb-4 " defaultValue="" required> 
+                    <option className="bg-gray-50 border-gray-600 p-2 rounded-lg focus:bg-purple-400 " disabled value ="">seleccione un vendedor</option>
                     {vendedores.map((el) =>{
                         return <option  key={nanoid()}  value={el._id}> {`${el.name} ${el.lastname}`}</option>
                     })}
@@ -102,9 +102,9 @@ setProductosTabla={setProductosTabla}
 />
 
                 <label className='flex flex-col'>              
-                <span  className="text-2x1 font-gray-900">Valor Total Venta</span>
+                <span  className="text-2x1 text-center font-extrabold font-gray-900 mt-8">Valor Total Venta</span>
                 <input 
-                className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2' 
+                className='bg-gray-50 border-gray-600 p-2 rounded-lg m-2 focus:ring-2 focus:ring-blue-600 ' 
                 type="number" 
                 name="valor" 
                 required
@@ -112,9 +112,9 @@ setProductosTabla={setProductosTabla}
             </label>
             <button 
             type="submit" 
-            className='col-span-2 bg-indigo-700 p-2 rounded-full shadow-md text-white'
+            className='col-span-2 text-xl bg-indigo-700 p-2 rounded-full shadow-md text-white my-4 hover:bg-indigo-800 active:bg-green-700'
             >
-            crear venta
+            Crear Venta
             </button>
         </form>
     </div>
@@ -195,7 +195,7 @@ setProductosTabla={setProductosTabla}
 <button
 type="button"
 onClick={() => agregarNuevoProducto()} 
-className="col-span-2 bg-indigo-700 p-2 rounded-full shadow-md text-white"
+className=" active:bg-green-700 col-span-2 bg-indigo-700 mb-2 p-2 rounded-full shadow-md text-white mx-3 hover:bg-indigo-800 "
 >
     Agregar un Producto
     </button>   

@@ -61,12 +61,12 @@ const Productos = () => {
     return (
         <div className='flex h-full w-full flex-col items-center justify-start p-8'>
             <div className='flex flex-col'>
-            <h2 className='text-3xl font-extrabold text-gray-900'>Página de administración de Productos</h2>
+            <h2 className='text-3xl font-extrabold text-gray-900 mb-8 mt-4'>Gestion de Productos</h2>
             <button 
                 onClick={() => {
                     setMostrarTabla(!mostrarTabla)
                     }} 
-                    className={`text-white bg-${colorBoton}-700 p-5 rounded-full`}
+                    className={`text-white font-semibold bg-${colorBoton}-700 p-5 rounded-full hover:bg-${colorBoton}-900 mb-4`}
                 >
                     {textoBoton}                       
             </button>
@@ -341,7 +341,7 @@ const FormularioCreacionProductos = ({setMostrarTabla,listaProductos,setProducto
     
     return (
         <div className='flex flex-col items-center justify-center'>
-            <h2 className='text-2xl font font-extrabold text-gray-800'>CREAR NUEVO PRODUCTO</h2>
+            <h2 className='text-2xl font font-extrabold text-gray-800 my-5'>Crear Nuevo Producto</h2>
             <form ref={form} onSubmit={submitForm} className='flex flex-col'>
 
                 <label className='flex flex-col' htmlFor='descripcion'>
@@ -382,7 +382,7 @@ const FormularioCreacionProductos = ({setMostrarTabla,listaProductos,setProducto
                 </label>
                 <button
                     type='submit'
-                    className='col-span-2 bg-indigo-700 p-2 rounded-full shadow-md text-white'
+                    className='col-span-2 bg-indigo-700 p-2 rounded-full shadow-md text-white mt-5 hover:bg-indigo-800'
                 >
                     Guardar Producto
                 </button>
