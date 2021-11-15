@@ -13,8 +13,8 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import 'styles/styles.css'
 import { Auth0Provider } from "@auth0/auth0-react";
 import { UserContext } from 'context/userContext';
-import { useState } from 'react/cjs/react.development';
 import PrivateRoute from 'components/PrivateRoute';
+import React, { useState } from 'react';
 
 function App() {
   const [userData, setUserData]= useState({})

@@ -70,7 +70,7 @@ export const obtenerDatosUsuario = async (successCallback,errorCallback)=>{
     await axios.request(options).then(successCallback).catch(errorCallback)
 }
 
-
+// eslint-disable-next-line
 export const editarUsuario = async (id, data, successCallback,errorCallback)=> {
     const options = {
         method: 'PATCH',
