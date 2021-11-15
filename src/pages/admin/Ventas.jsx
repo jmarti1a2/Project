@@ -63,24 +63,17 @@ const listaProductos =Object.keys(formData)
 
 
 
-// console.log("lista antes de cantidad",listaProductos);
-
-// Object.keys(formData).forEach((k) => {
-//     if (k.includes("cantidad")){
-//         const indice=parseInt(k.split("_")[1]);
-//         listaProductos[indice]["cantidad"]=formData[k];
-//     }
-    
-// });
-
-// console.log("lista despues de cantidad",listaProductos);
-
 const datosVenta={
     vendedor:vendedores.filter((v)=> v._id === formData.vendedor)[0],
     cantidad:formData.valor,
     productos:listaProductos,
 };
 // console.log("lista productos",listaProductos);
+
+
+
+
+
 
 await crearVenta(
     datosVenta,
@@ -132,22 +125,6 @@ setProductosTabla={setProductosTabla}
     </div>
    );
 };
-
-    // const DropDownProductos=({productos,nombre}) => {
-    //     return (
-    //         <label className='flex flex-col' htmlFor='producto'>
-    //         <span  className="text-2x1 font-gray-900">producto</span>
-    //         <select name={nombre} className="p-2" defaultValue={-1}>
-    //             <option disabled value ={-1}>seleccione un producto</option>
-    //             {productos.map((el) =>{
-    //                 return <option  key={nanoid()}  value={el._id}>{`${el.valorUnitario}${el.estado}`}</option>
-    //             })}
-    //         </select>
-    //         </label>
-
-    //     );
-       
-    // };
 
 
     const TablaProductos = ({productos,setProductos,setProductosTabla }) => {

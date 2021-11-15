@@ -39,7 +39,7 @@ function Login() {
                           <div>
                           <button
                                 type='submit'
-                                className='group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-gray-700 bg-gray-200 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500'
+                                className='group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-gray-700 bg-gray-200 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transform hover:scale-105 motion-reduce:transform-none'
                             >
                                 <div className='flex items-center justify-start'>
                                 <img src={Google} alt='Logo Google' className='h-6 w-6' />

@@ -22,7 +22,7 @@ function Index() {
                     <div className="pd-4 m-5">
                     <button 
                     onClick={() => loginWithRedirect()}
-                    className='bg-indigo-500 my-2 p-2 text-2xl text-white rounded-lg shadow-md hover:bg-indigo-800 font-medium '>
+                    className='bg-indigo-500 my-2 p-2 text-2xl text-white rounded-lg shadow-md hover:bg-indigo-800 font-medium transform hover:scale-110 motion-reduce:transform-none '>
                         Iniciar Sesión
                     </button>
                 </div>
