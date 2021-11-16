@@ -10,7 +10,7 @@ const Sidebar = () =>{
     const { user, logout } = useAuth0();
 
     const cerrarSesion = () =>{
-        logout({ returnTo:'http://https://lit-caverns-59267.herokuapp.com/'})
+        logout({ returnTo:'https://lit-caverns-59267.herokuapp.com/admin'})
         localStorage.setItem('token',null)
     }
     return (
