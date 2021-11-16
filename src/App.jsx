@@ -12,7 +12,7 @@ import Registro from 'pages/Registro';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import 'styles/styles.css'
 import { Auth0Provider } from "@auth0/auth0-react";
-import { UserContext } from 'context/userContext';
+import { UserContext } from 'context/userContext';  
 import PrivateRoute from 'components/PrivateRoute';
 import React, { useState } from 'react';
 
