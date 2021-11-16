@@ -36,7 +36,7 @@ const PrivateLayout = ({children }) => {
     },(err)=>{
         console.log('err',err)
         setLoadingUserInformation(false)
-        logout({ returnTo:'http://https://lit-caverns-59267.herokuapp.com/'})
+        logout({ returnTo:'https://dashboard.heroku.com/'})
     })    
     }
     if (isAuthenticated){
