@@ -43,7 +43,7 @@ const Test = ()=> {
 
      const options = {
             method: 'POST',
-            url: 'http://localhost:5000/ventas',
+            url: 'https://tranquil-tor-11324.herokuapp.com/ventas',
             headers: {'Content-Type': 'application/json'},
             data: nuevaVenta,
           };

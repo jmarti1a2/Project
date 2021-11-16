@@ -25,7 +25,7 @@ function App() {
     <Auth0Provider 
       domain="aplicacion-des-arrolladores.us.auth0.com"
       clientId="dnxGxlXuVhvNSC8hzfH3yMF8QmK17zjc"
-      redirectUri='https://agile-savannah-89796.herokuapp.com/admin'
+      redirectUri='https://dashboard.heroku.com/apps/lit-caverns-59267/admin'
       audience='api-autenticacion-aplicacion-des-arrolladores'
     >
       <UserContext.Provider value={{userData, setUserData}}>
