@@ -15,7 +15,9 @@ const Admin = () =>{
                    
               <div className="w-full h-screen items-center content-center">
                     <h1 className="text-3xl font-extrabold text-gray-900 mb-4 mt-4 text-center p-2">
-                        ¡Hola!
+                        ¡Hola!<br/>
+
+                        Podra ingresar a los módulos de la aplicación una vez sea autorizado por el administrador
                     </h1>
 
                     <div className="text-center my-2 p-2">
